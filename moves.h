@@ -2,6 +2,7 @@
 #define MOVES_H
 
 #include <utility>
+#include <cmath>
 
 bool isInside(int r, int c);
 bool isWhitePiece(char ch);
