@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SFML Chess Game - Complete Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>♔ SFML Chess Game ♚</h1>
+            <p>Complete Technical Documentation & Architecture Guide</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('overview')">Overview</button>
+            <button class="nav-tab" onclick="showTab('architecture')">Architecture</button>
+            <button class="nav-tab" onclick="showTab('modules')">Modules</button>
+            <button class="nav-tab" onclick="showTab('game-logic')">Game Logic</button>
+            <button class="nav-tab" onclick="showTab('ui')">UI System</button>
+            <button class="nav-tab" onclick="showTab('compilation')">Build Guide</button>
+        </div>
+
+        <div class="content">
+            <!-- OVERVIEW TAB -->
+            <div id="overview" class="tab-content active">
+                <h2>Project Overview</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">
+                    This is a fully-featured chess game built with C++ and SFML (Simple and Fast Multimedia Library).
+                    The project implements complete chess rules, a graphical user interface, save/load functionality,
+                    and game state management.
+                </p>
+
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <h4>♟️ Complete Chess Rules</h4>
+                        <p>All piece movements, check, checkmate, and stalemate detection</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4>🎨 Graphical Interface</h4>
+                        <p>Beautiful SFML-based board with custom piece sprites</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4>💾 Save/Load System</h4>
+                        <p>Persistent game states and high score tracking</p>
+                    </div>
+                    <div class="feature-box">
+                        <h4>⚙️ Settings Management</h4>
+                        <p>Customizable sound and theme preferences</p>
+                    </div>
+                </div>
+
+                <h3>File Structure</h3>
+                <table>
+                    <tr>
+                        <th>File</th>
+                        <th>Purpose</th>
+                        <th>Lines of Code</th>
+                    </tr>
+                    <tr>
+                        <td><strong>main.cpp</strong></td>
+                        <td>Main game loop and event handling</td>
+                        <td>~180</td>
+                    </tr>
+                    <tr>
+                        <td><strong>board.cpp/h</strong></td>
+                        <td>Board state and initialization</td>
+                        <td>~40</td>
+                    </tr>
+                    <tr>
+                        <td><strong>moves.cpp/h</strong></td>
+                        <td>Move validation for all pieces</td>
+                        <td>~150</td>
+                    </tr>
+                    <tr>
+                        <td><strong>checkmate.cpp/h</strong></td>
+                        <td>Check, checkmate, stalemate logic</td>
+                        <td>~250</td>
+                    </tr>
+                    <tr>
+                        <td><strong>render.cpp/h</strong></td>
+                        <td>Graphics rendering and textures</td>
+                        <td>~120</td>
+                    </tr>
+                    <tr>
+                        <td><strong>menu.cpp/h</strong></td>
+                        <td>Main menu and pause menu UI</td>
+                        <td>~280</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ending.cpp/h</strong></td>
+                        <td>End game screen and results</td>
+                        <td>~100</td>
+                    </tr>
+                    <tr>
+                        <td><strong>save.cpp/h</strong></td>
+                        <td>Game state serialization</td>
+                        <td>~50</td>
+                    </tr>
+                    <tr>
+                        <td><strong>settings.cpp/h</strong></td>
+                        <td>User preferences management</td>
+                        <td>~30</td>
+                    </tr>
+                    <tr>
+                        <td><strong>highscores.cpp/h</strong></td>
+                        <td>Win tracking and statistics</td>
+                        <td>~40</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- ARCHITECTURE TAB -->
+            <div id="architecture" class="tab-content">
+                <h2>System Architecture</h2>
+
+                <h3>Program Flow</h3>
+                <div class="architecture-diagram">
+                    <div class="flow-box">Program Start</div>
+                    <div class="arrow">↓</div>
+                    <div class="flow-box">Load Settings & Scores</div>
+                    <div class="arrow">↓</div>
+                    <div class="flow-box">Main Menu</div>
+                    <div class="arrow">↓</div>
+                    <div class="flow-box">Game Loop</div>
+                    <div class="arrow">↓</div>
+                    <div class="flow-box">Move Processing</div>
+                    <div class="arrow">↓</div>
+                    <div class="flow-box">Check/Checkmate Detection</div>
+                    <div class="arrow">↓</div>
+                    <div class="flow-box">End Game / Menu</div>
+                </div>
+
+                <h3>Data Flow Architecture</h3>
+                <div class="code-block">
+                    <span class="comment">// Global Board State (board.cpp)</span>
+                    <span class="type">char</span> board[<span class="string">8</span>][<span class="string">8</span>];
+                    <span class="comment">// Chess board representation</span>
+                    <span class="type">char</span> turn = <span class="string">'w'</span>; <span class="comment">//
+                        Current player ('w' or 'b')</span>
+                    <span class="type">int</span> whiteWins = <span class="string">0</span>; <span class="comment">//
+                        White victories</span>
+                    <span class="type">int</span> blackWins = <span class="string">0</span>; <span class="comment">//
+                        Black victories</span>
+
+                    <span class="comment">// Main Game Loop (main.cpp)</span>
+                    <span class="keyword">while</span> (window.isOpen() && inGame) {
+                    <span class="comment">// 1. Event Processing</span>
+                    <span class="keyword">if</span> (mouse click) {
+                    <span class="function">windowToBoard</span>(mousePos); <span class="comment">// Convert to board
+                        coords</span>
+                    <span class="function">isMoveValid</span>(from, to); <span class="comment">// Validate move</span>
+                    <span class="function">isKingInCheck</span>(side); <span class="comment">// Check legality</span>
+                    <span class="function">isCheckmate</span>(opponent); <span class="comment">// Win condition</span>
+                    }
+
+                    <span class="comment">// 2. Rendering</span>
+                    <span class="function">drawBoardAndPieces</span>(window);
+                    <span class="function">drawHighlight</span>(selectedSquare);
+                    }
+                </div>
+
+                <h3>Module Dependencies</h3>
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🎮</div>
+                        <div class="module-title">main.cpp</div>
+                    </div>
+                    <p><strong>Dependencies:</strong> All modules (orchestrator)</p>
+                    <p><strong>Role:</strong> Central game loop, event handling, state transitions</p>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">📋</div>
+                        <div class="module-title">board.cpp</div>
+                    </div>
+                    <p><strong>Dependencies:</strong> None (core data)</p>
+                    <p><strong>Role:</strong> Maintains board state and turn tracking</p>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">♟️</div>
+                        <div class="module-title">moves.cpp</div>
+                    </div>
+                    <p><strong>Dependencies:</strong> board.cpp</p>
+                    <p><strong>Role:</strong> Validates piece-specific move rules</p>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">👑</div>
+                        <div class="module-title">checkmate.cpp</div>
+                    </div>
+                    <p><strong>Dependencies:</strong> board.cpp, moves.cpp</p>
+                    <p><strong>Role:</strong> Advanced game state detection (check, checkmate, stalemate)</p>
+                </div>
+            </div>
+
+            <!-- MODULES TAB -->
+            <div id="modules" class="tab-content">
+                <h2>Module Documentation</h2>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">📋</div>
+                        <div class="module-title">board.h / board.cpp</div>
+                        <span class="badge">Core Module</span>
+                    </div>
+                    <p><strong>Purpose:</strong> Manages the chess board state and global game variables</p>
+
+                    <div class="function-list">
+                        <div class="function-item">
+                            <strong>void initializeBoard()</strong><br>
+                            Sets up the initial chess position with all pieces in their starting squares
+                        </div>
+                        <div class="function-item">
+                            <strong>void printBoardConsole()</strong><br>
+                            Debug function to print the board state to console
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top: 20px;">Global Variables:</h4>
+                    <div class="code-block">
+                        <span class="keyword">extern</span> <span class="type">char</span> board[<span
+                            class="string">8</span>][<span class="string">8</span>]; <span class="comment">// 8x8 chess
+                            board</span>
+                        <span class="keyword">extern</span> <span class="type">char</span> turn; <span
+                            class="comment">// 'w' or 'b'</span>
+                        <span class="keyword">extern</span> <span class="type">int</span> whiteWins; <span
+                            class="comment">// Win counter</span>
+                        <span class="keyword">extern</span> <span class="type">int</span> blackWins; <span
+                            class="comment">// Win counter</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">♟️</div>
+                        <div class="module-title">moves.h / moves.cpp</div>
+                        <span class="badge">Logic Module</span>
+                    </div>
+                    <p><strong>Purpose:</strong> Validates all chess piece movements according to chess rules</p>
+
+                    <div class="function-list">
+                        <div class="function-item">
+                            <strong>bool isMoveValid(int sr, int sc, int dr, int dc)</strong><br>
+                            Master function that validates any move based on piece type and game state
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isPawnMove(...)</strong><br>
+                            Validates pawn moves: forward 1/2 squares, diagonal captures
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isRookMove(...)</strong><br>
+                            Validates rook moves: straight lines (horizontal/vertical)
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isBishopMove(...)</strong><br>
+                            Validates bishop moves: diagonal lines
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isKnightMove(...)</strong><br>
+                            Validates knight moves: L-shape (2+1 squares)
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isQueenMove(...)</strong><br>
+                            Validates queen moves: combination of rook + bishop
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isKingMove(...)</strong><br>
+                            Validates king moves: one square in any direction
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isPathClear(...)</strong><br>
+                            Checks if there are no pieces blocking the path between two squares
+                        </div>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">👑</div>
+                        <div class="module-title">checkmate.h / checkmate.cpp</div>
+                        <span class="badge">Advanced Logic</span>
+                    </div>
+                    <p><strong>Purpose:</strong> Implements check, checkmate, and stalemate detection</p>
+
+                    <div class="function-list">
+                        <div class="function-item">
+                            <strong>bool isSquareAttacked(int r, int c, char attackerColor)</strong><br>
+                            Determines if a square is under attack by a given color
+                        </div>
+                        <div class="function-item">
+                            <strong>bool findKing(char side, int *kr, int *kc)</strong><br>
+                            Locates the king position for a given side
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isKingInCheck(char side)</strong><br>
+                            Checks if the specified side's king is currently in check
+                        </div>
+                        <div class="function-item">
+                            <strong>bool hasAnyLegalMove(char side)</strong><br>
+                            Determines if a player has any legal moves available (critical for checkmate/stalemate)
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isCheckmate(char side)</strong><br>
+                            Returns true if the side is in checkmate (in check + no legal moves)
+                        </div>
+                        <div class="function-item">
+                            <strong>bool isStalemate(char side)</strong><br>
+                            Returns true if the side is in stalemate (not in check + no legal moves)
+                        </div>
+                        <div class="function-item">
+                            <strong>int getLegalKingMoves(char side, int out[16])</strong><br>
+                            Gets all legal king moves for a side (used for UI hints)
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top: 20px;">Attack Detection Algorithm:</h4>
+                    <div class="code-block">
+                        <span class="comment">// Checks all possible attack vectors</span>
+                        <span class="keyword">bool</span> <span class="function">isSquareAttacked</span>(<span
+                            class="type">int</span> r, <span class="type">int</span> c, <span class="type">char</span>
+                        attackerColor) {
+                        <span class="comment">// 1. Check pawn attacks (diagonal)</span>
+                        <span class="comment">// 2. Check knight attacks (L-shapes)</span>
+                        <span class="comment">// 3. Check rook/queen attacks (lines)</span>
+                        <span class="comment">// 4. Check bishop/queen attacks (diagonals)</span>
+                        <span class="comment">// 5. Check king adjacency</span>
+                        <span class="keyword">return</span> anyAttackFound;
+                        }
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🎨</div>
+                        <div class="module-title">render.h / render.cpp</div>
+                        <span class="badge">Graphics Module</span>
+                    </div>
+                    <p><strong>Purpose:</strong> Handles all SFML rendering including board, pieces, and highlights</p>
+
+                    <div class="function-list">
+                        <div class="function-item">
+                            <strong>void loadTextures()</strong><br>
+                            Loads all piece sprites and board texture from assets folder
+                        </div>
+                        <div class="function-item">
+                            <strong>void drawBoardAndPieces(sf::RenderWindow &window)</strong><br>
+                            Renders the chess board and all pieces in their current positions
+                        </div>
+                        <div class="function-item">
+                            <strong>void drawHighlight(sf::RenderWindow &window, int r, int c)</strong><br>
+                            Draws a semi-transparent yellow highlight on the selected square
+                        </div>
+                        <div class="function-item">
+                            <strong>std::pair&lt;int,int&gt; windowToBoard(sf::RenderWindow &window, sf::Vector2i
+                                mousePos)</strong><br>
+                            Converts mouse pixel coordinates to board row/column indices
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top: 20px;">Piece Texture Mapping:</h4>
+                    <div class="code-block">
+                        <span class="keyword">static</span> <span class="keyword">const</span> <span
+                            class="type">char</span>* pieceFiles[<span class="string">12</span>] = {
+                        <span class="string">"assets/pieces/white_pawn.png"</span>,
+                        <span class="string">"assets/pieces/white_rook.png"</span>,
+                        <span class="string">"assets/pieces/white_knight.png"</span>,
+                        <span class="string">"assets/pieces/white_bishop.png"</span>,
+                        <span class="string">"assets/pieces/white_queen.png"</span>,
+                        <span class="string">"assets/pieces/white_king.png"</span>,
+                        <span class="string">"assets/pieces/black_pawn.png"</span>,
+                        <span class="comment">// ... and so on</span>
+                        };
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">💾</div>
+                        <div class="module-title">save.h / save.cpp</div>
+                        <span class="badge">Persistence</span>
+                    </div>
+                    <p><strong>Purpose:</strong> Manages game state serialization to files</p>
+
+                    <div class="function-list">
+                        <div class="function-item">
+                            <strong>void saveGameToFile(const char* filename)</strong><br>
+                            Saves current board state, turn, and scores to file
+                        </div>
+                        <div class="function-item">
+                            <strong>bool loadGameFromFile(const char* filename)</strong><br>
+                            Loads a previously saved game state from file
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top: 20px;">Save File Format:</h4>
+                    <div class="code-block">
+                        rnbqkbnr <span class="comment">// Row 0 (black back rank)</span>
+                        pppppppp <span class="comment">// Row 1 (black pawns)</span>
+                        <span class="comment">// Rows 2-5 (empty or pieces)</span>
+                        PPPPPPPP <span class="comment">// Row 6 (white pawns)</span>
+                        RNBQKBNR <span class="comment">// Row 7 (white back rank)</span>
+                        w <span class="comment">// Current turn ('w' or 'b')</span>
+                        0 <span class="comment">// White wins</span>
+                        0 <span class="comment">// Black wins</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GAME LOGIC TAB -->
+            <div id="game-logic" class="tab-content">
+                <h2>Game Logic Deep Dive</h2>
+
+                <h3>Move Validation System</h3>
+                <p>The game uses a multi-layered validation system to ensure all moves are legal:</p>
+
+                <div class="module-card">
+                    <h4>Layer 1: Basic Validation</h4>
+                    <div class="code-block">
+                        <span class="keyword">bool</span> <span class="function">isMoveValid</span>(<span
+                            class="type">int</span> sr, <span class="type">int</span> sc, <span class="type">int</span>
+                        dr, <span class="type">int</span> dc) {
+                        <span class="comment">// 1. Check bounds</span>
+                        <span class="keyword">if</span> (!<span class="function">isInside</span>(sr,sc) || !<span
+                            class="function">isInside</span>(dr,dc)) <span class="keyword">return</span> <span
+                            class="string">false</span>;
+
+                        <span class="comment">// 2. Check if there's a piece to move</span>
+                        <span class="keyword">if</span> (board[sr][sc] == <span class="string">' '</span>) <span
+                            class="keyword">return</span> <span class="string">false</span>;
+
+                        <span class="comment">// 3. Check turn ownership</span>
+                        <span class="keyword">if</span> (turn == <span class="string">'w'</span> && !<span
+                            class="function">isWhitePiece</span>(board[sr][sc])) <span class="keyword">return</span>
+                        <span class="string">false</span>;
+
+                        <span class="comment">// 4. Can't capture own pieces</span>
+                        <span class="keyword">if</span> (<span class="function">isSameColor</span>(board[sr][sc],
+                        board[dr][dc])) <span class="keyword">return</span> <span class="string">false</span>;
+
+                        <span class="comment">// 5. Call piece-specific validation</span>
+                        <span class="keyword">return</span> <span class="function">isPawnMove</span>(...) || <span
+                            class="function">isRookMove</span>(...) || ...;
+                        }
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <h4>Layer 2: Piece-Specific Rules</h4>
+                    <p><strong>Example: Pawn Movement</strong></p>
+                    <div class="code-block">
+                        <span class="keyword">bool</span> <span class="function">isPawnMove</span>(<span
+                            class="type">int</span> sr, <span class="type">int</span> sc, <span class="type">int</span>
+                        dr, <span class="type">int</span> dc) {
+                        <span class="type">int</span> dir = <span class="function">isWhitePiece</span>(board[sr][sc]) ?
+                        <span class="string">-1</span> : <span class="string">1</span>;
+
+                        <span class="comment">// Forward move (1 square)</span>
+                        <span class="keyword">if</span> (dc == sc && dr == sr + dir && board[dr][dc] == <span
+                            class="string">' '</span>)
+                        <span class="keyword">return</span> <span class="string">true</span>;
+
+                        <span class="comment">// Initial double move</span>
+                        <span class="keyword">if</span> (dc == sc && dr == sr + <span class="string">2</span>*dir && sr
+                        == startRow)
+                        <span class="keyword">return</span> <span class="string">true</span>;
+
+                        <span class="comment">// Diagonal capture</span>
+                        <span class="keyword">if</span> (abs(dc - sc) == <span class="string">1</span> && dr == sr + dir
+                        && board[dr][dc] != <span class="string">' '</span>)
+                        <span class="keyword">return</span> <span class="string">true</span>;
+
+                        <span class="keyword">return</span> <span class="string">false</span>;
+                        }
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <h4>Layer 3: Check Validation</h4>
+                    <p>After a move is made, the game ensures the king is not in check:</p>
+                    <div class="code-block">
+                        <span class="comment">// In main.cpp game loop</span>
+                        <span class="type">char</span> savedDest = board[r][c];
+                        <span class="type">char</span> savedSrc = board[selR][selC];
+
+                        <span class="comment">// Try the move</span>
+                        board[r][c] = savedSrc;
+                        board[selR][selC] = <span class="string">' '</span>;
+
+                        <span class="comment">// Check if our own king is in check</span>
+                        <span class="keyword">if</span> (<span class="function">isKingInCheck</span>(turn)) {
+                        <span class="comment">// Illegal! Undo the move</span>
+                        board[selR][selC] = savedSrc;
+                        board[r][c] = savedDest;
+                        <span class="keyword">continue</span>;
+                        }
+
+                        <span class="comment">// Move is legal - check for checkmate</span>
+                        <span class="keyword">if</span> (<span class="function">isCheckmate</span>(opponent)) {
+                        <span class="function">recordWin</span>(turn);
+                        <span class="function">showEndingScreen</span>();
+                        }
+                    </div>
+                </div>
+
+                <h3>Checkmate Detection Algorithm</h3>
+                <div class="code-block">
+                    <span class="keyword">bool</span> <span class="function">isCheckmate</span>(<span
+                        class="type">char</span> side) {
+                    <span class="comment">// Must be in check AND have no legal moves</span>
+                    <span class="keyword">return</span> <span class="function">isKingInCheck</span>(side) && !<span
+                        class="function">hasAnyLegalMove</span>(side);
+                    }
+
+                    <span class="keyword">bool</span> <span class="function">hasAnyLegalMove</span>(<span
+                        class="type">char</span> side) {
+                    <span class="comment">// Try every possible move for this side</span>
+                    <span class="keyword">for</span> (<span class="type">int</span> sr = <span class="string">0</span>;
+                    sr < <span class="string">8</span>; sr++) {
+                        <span class="keyword">for</span> (<span class="type">int</span> sc = <span
+                            class="string">0</span>; sc < <span class="string">8</span>; sc++) {
+                            <span class="keyword">if</span> (board[sr][sc] belongs to side) {
+                            <span class="keyword">for</span> (<span class="type">int</span> dr = <span
+                                class="string">0</span>; dr < <span class="string">8</span>; dr++) {
+                                <span class="keyword">for</span> (<span class="type">int</span> dc = <span
+                                    class="string">0</span>; dc < <span class="string">8</span>; dc++) {
+                                    <span class="keyword">if</span> (<span
+                                        class="function">isLegalMove</span>(sr,sc,dr,dc)) {
+                                    <span class="comment">// Simulate move</span>
+                                    makeMove();
+                                    <span class="type">bool</span> stillInCheck = <span
+                                        class="function">isKingInCheck</span>(side);
+                                    undoMove();
+
+                                    <span class="keyword">if</span> (!stillInCheck)
+                                    <span class="keyword">return</span> <span class="string">true</span>; <span
+                                        class="comment">// Found a legal move!</span>
+                                    }
+                                    }
+                                    }
+                                    }
+                                    }
+                                    }
+                                    <span class="keyword">return</span> <span class="string">false</span>; <span
+                                        class="comment">// No legal moves found</span>
+                                    }
+                </div>
+
+                <h3>Board Representation</h3>
+                <p>The board uses a character-based 2D array where:</p>
+                <ul style="margin: 15px 0; padding-left: 40px;">
+                    <li><span class="highlight">Uppercase letters</span> = White pieces (P, R, N, B, Q, K)</li>
+                    <li><span class="highlight">Lowercase letters</span> = Black pieces (p, r, n, b, q, k)</li>
+                    <li><span class="highlight">Space character</span> = Empty square</li>
+                    <li><span class="highlight">Row 0</span> = Black's back rank (top of screen)</li>
+                    <li><span class="highlight">Row 7</span> = White's back rank (bottom of screen)</li>
+                </ul>
+            </div>
+
+            <!-- UI SYSTEM TAB -->
+            <div id="ui" class="tab-content">
+                <h2>User Interface System</h2>
+
+                <h3>Menu System</h3>
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">📱</div>
+                        <div class="module-title">menu.cpp - Main Menu</div>
+                    </div>
+                    <p><strong>Features:</strong></p>
+                    <ul style="margin: 10px 0; padding-left: 40px;">
+                        <li>Start New Game</li>
+                        <li>Load Saved Game</li>
+                        <li>Settings Configuration</li>
+                        <li>High Scores Display</li>
+                        <li>Exit Game</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <span class="keyword">MenuResult</span> <span class="function">mainMenu</span>(sf::RenderWindow
+                        &window) {
+                        <span class="comment">// Create menu buttons with hover effects</span>
+                        <span class="keyword">const</span> <span class="type">char</span>* items[] = {
+                        <span class="string">"Start New Game"</span>,
+                        <span class="string">"Load Game"</span>,
+                        <span class="string">"Settings"</span>,
+                        <span class="string">"High Scores"</span>,
+                        <span class="string">"Exit"</span>
+                        };
+
+                        <span class="comment">// Event loop with hover and click detection</span>
+                        <span class="keyword">while</span> (window.isOpen()) {
+                        <span class="keyword">if</span> (mouseOver(button)) {
+                        button.setFillColor(hoverColor);
+                        }
+                        <span class="keyword">if</span> (clicked(button)) {
+                        <span class="keyword">return</span> correspondingMenuResult;
+                        }
+                        }
+                        }
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">⏸️</div>
+                        <div class="module-title">Pause Menu</div>
+                    </div>
+                    <p>Accessed during gameplay by pressing <strong>P</strong> key</p>
+                    <ul style="margin: 10px 0; padding-left: 40px;">
+                        <li><strong>Resume</strong> - Return to game</li>
+                        <li><strong>Save Game</strong> - Save current state</li>
+                        <li><strong>Exit to Main Menu</strong> - Abandon current game</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🏆</div>
+                        <div class="module-title">ending.cpp - End Game Screen</div>
+                    </div>
+                    <p><strong>Game Result Types:</strong></p>
+                    <div class="code-block">
+                        <span class="keyword">enum</span> <span class="type">GameResult</span> {
+                        WHITE_WINS, <span class="comment">// White checkmated black</span>
+                        BLACK_WINS, <span class="comment">// Black checkmated white</span>
+                        DRAW, <span class="comment">// Mutual agreement (not implemented)</span>
+                        STALEMATE <span class="comment">// No legal moves, not in check</span>
+                        };
+
+                        <span class="keyword">bool</span> <span
+                            class="function">showEndingScreen</span>(sf::RenderWindow &window, GameResult result) {
+                        <span class="comment">// Display result with styled text</span>
+                        <span class="comment">// Options: "Play Again" or "Exit to Main Menu"</span>
+                        <span class="comment">// Returns true if player wants to play again</span>
+                        }
+                    </div>
+                </div>
+
+                <h3>Rendering Pipeline</h3>
+                <div class="architecture-diagram">
+                    <div class="flow-box">Load Textures</div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box">Draw Board Background</div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box">Draw All Pieces</div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box">Draw Selection Highlight</div>
+                    <div class="arrow">→</div>
+                    <div class="flow-box">Display Window</div>
+                </div>
+
+                <h3>Mouse-to-Board Coordinate Conversion</h3>
+                <div class="code-block">
+                    std::pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt; <span
+                        class="function">windowToBoard</span>(sf::RenderWindow &window, sf::Vector2i mousePos) {
+                    <span class="type">float</span> cellW = window.getSize().x / <span class="string">8.0f</span>;
+                    <span class="type">float</span> cellH = window.getSize().y / <span class="string">8.0f</span>;
+
+                    <span class="type">int</span> col = <span class="type">int</span>(mousePos.x / cellW); <span
+                        class="comment">// 0-7</span>
+                    <span class="type">int</span> row = <span class="type">int</span>(mousePos.y / cellH); <span
+                        class="comment">// 0-7</span>
+
+                    <span class="keyword">return</span> {row, col};
+                    }
+                </div>
+
+                <h3>Keyboard Controls</h3>
+                <table>
+                    <tr>
+                        <th>Key</th>
+                        <th>Action</th>
+                        <th>Context</th>
+                    </tr>
+                    <tr>
+                        <td><strong>ESC</strong></td>
+                        <td>Exit to main menu</td>
+                        <td>During game or settings</td>
+                    </tr>
+                    <tr>
+                        <td><strong>P</strong></td>
+                        <td>Pause menu</td>
+                        <td>During game</td>
+                    </tr>
+                    <tr>
+                        <td><strong>S</strong></td>
+                        <td>Quick save</td>
+                        <td>During game</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mouse Click</strong></td>
+                        <td>Select piece / Make move</td>
+                        <td>During game</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Enter / Space</strong></td>
+                        <td>Play again</td>
+                        <td>End screen</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- COMPILATION TAB -->
+            <div id="compilation" class="tab-content">
+                <h2>Build & Compilation Guide</h2>
+
+                <div class="compile-section">
+                    <h3>⚠️ Prerequisites</h3>
+                    <ul style="margin: 15px 0; padding-left: 40px;">
+                        <li><strong>SFML 2.6.2</strong> - Graphics library</li>
+                        <li><strong>MinGW/G++</strong> - C++ compiler (Windows)</li>
+                        <li><strong>GCC</strong> - C++ compiler (Linux/Mac)</li>
+                        <li><strong>Assets folder</strong> - Chess piece images and board texture</li>
+                    </ul>
+                </div>
+
+                <h3>Windows Compilation</h3>
+                <div class="code-block">
+                    <span class="comment"># Compile command (adjust SFML path to your installation)</span>
+                    g++ main.cpp board.cpp moves.cpp render.cpp menu.cpp checkmate.cpp \
+                    save.cpp highscores.cpp settings.cpp ending.cpp -o chess_game \
+                    -I<span class="string">"/c/SFML-2.6.2/include"</span> \
+                    -L<span class="string">"/c/SFML-2.6.2/lib"</span> \
+                    -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+
+                    <span class="comment"># Run the game</span>
+                    ./chess_game
+                </div>
+
+                <h3>Linux Compilation</h3>
+                <div class="code-block">
+                    <span class="comment"># Install SFML (Ubuntu/Debian)</span>
+                    sudo apt-get install libsfml-dev
+
+                    <span class="comment"># Compile</span>
+                    g++ main.cpp board.cpp moves.cpp render.cpp menu.cpp checkmate.cpp \
+                    save.cpp highscores.cpp settings.cpp ending.cpp -o chess_game \
+                    -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+
+                    <span class="comment"># Run</span>
+                    ./chess_game
+                </div>
+
+                <h3>Required Directory Structure</h3>
+                <div class="code-block">
+                    chess_game/
+                    │
+                    ├── main.cpp
+                    ├── board.cpp / board.h
+                    ├── moves.cpp / moves.h
+                    ├── checkmate.cpp / checkmate.h
+                    ├── render.cpp / render.h
+                    ├── menu.cpp / menu.h
+                    ├── ending.cpp / ending.h
+                    ├── save.cpp / save.h
+                    ├── highscores.cpp / highscores.h
+                    ├── settings.cpp / settings.h
+                    │
+                    ├── assets/
+                    │ ├── board.png
+                    │ └── pieces/
+                    │ ├── white_pawn.png
+                    │ ├── white_rook.png
+                    │ ├── white_knight.png
+                    │ ├── white_bishop.png
+                    │ ├── white_queen.png
+                    │ ├── white_king.png
+                    │ ├── black_pawn.png
+                    │ ├── black_rook.png
+                    │ ├── black_knight.png
+                    │ ├── black_bishop.png
+                    │ ├── black_queen.png
+                    │ └── black_king.png
+                    │
+                    ├── savegame.txt <span class="comment">(auto-generated)</span>
+                    ├── highscores.dat <span class="comment">(auto-generated)</span>
+                    └── settings.cfg <span class="comment">(auto-generated)</span>
+                </div>
+
+                <h3>Common Compilation Issues</h3>
+                <table>
+                    <tr>
+                        <th>Error</th>
+                        <th>Solution</th>
+                    </tr>
+                    <tr>
+                        <td>Cannot find SFML headers</td>
+                        <td>Verify -I flag points to SFML include directory</td>
+                    </tr>
+                    <tr>
+                        <td>Undefined reference to SFML functions</td>
+                        <td>Check -L flag and ensure all -lsfml-* libraries are linked</td>
+                    </tr>
+                    <tr>
+                        <td>Failed to load font</td>
+                        <td>Ensure Arial font exists at C:/Windows/Fonts/arial.ttf (Windows)</td>
+                    </tr>
+                    <tr>
+                        <td>Failed to load textures</td>
+                        <td>Create assets/pieces/ folder with all PNG files</td>
+                    </tr>
+                    <tr>
+                        <td>Window doesn't open</td>
+                        <td>SFML DLLs must be in same directory as executable (Windows)</td>
+                    </tr>
+                </table>
+
+                <h3>Runtime Files Generated</h3>
+                <div class="module-card">
+                    <h4>savegame.txt</h4>
+                    <p>Stores the current game state including:</p>
+                    <ul style="margin: 10px 0; padding-left: 40px;">
+                        <li>8x8 board configuration (8 lines)</li>
+                        <li>Current turn (w or b)</li>
+                        <li>White wins count</li>
+                        <li>Black wins count</li>
+                    </ul>
+                </div>
+
+                <div class="module-card">
+                    <h4>highscores.dat</h4>
+                    <p>Simple text file with two integers:</p>
+                    <div class="code-block">
+                        5 <span class="comment">// White wins</span>
+                        3 <span class="comment">// Black wins</span>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <h4>settings.cfg</h4>
+                    <p>User preferences:</p>
+                    <div class="code-block">
+                        1 <span class="comment">// Sound on (1) or off (0)</span>
+                        0 <span class="comment">// Theme: 0 = default, 1 = alternate</span>
+                    </div>
+                </div>
+
+                <h3>Performance Notes</h3>
+                <ul style="margin: 15px 0; padding-left: 40px;">
+                    <li>Game runs at 60 FPS (capped via <code>window.setFramerateLimit(60)</code>)</li>
+                    <li>Checkmate detection uses brute-force search (acceptable for chess)</li>
+                    <li>Texture loading happens once at startup</li>
+                    <li>No dynamic memory allocation during gameplay</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>SFML Chess Game Documentation</strong></p>
+            <p>A complete chess implementation with graphical interface, save system, and game state management</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Built with C++ and SFML 2.6.2</p>
+        </footer>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
