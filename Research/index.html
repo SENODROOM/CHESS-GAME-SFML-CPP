@@ -24,13 +24,36 @@
             </a>
         </header>
 
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('overview')">Overview</button>
-            <button class="nav-tab" onclick="showTab('architecture')">Architecture</button>
-            <button class="nav-tab" onclick="showTab('modules')">Modules</button>
-            <button class="nav-tab" onclick="showTab('game-logic')">Game Logic</button>
-            <button class="nav-tab" onclick="showTab('ui')">UI System</button>
-            <button class="nav-tab" onclick="showTab('compilation')">Build Guide</button>
+        <div class="nav-container">
+            <button class="menu-toggle" id="menuToggle">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+
+            <div class="nav-tabs" id="navTabs">
+                <div class="tab-indicator" id="tabIndicator"></div>
+                <button class="nav-tab active" data-tab="overview">
+                    <span class="icon">📋</span>Overview
+                </button>
+                <button class="nav-tab" data-tab="architecture">
+                    <span class="icon">🏗️</span>Architecture
+                </button>
+                <button class="nav-tab" data-tab="modules">
+                    <span class="icon">🧩</span>Modules
+                </button>
+                <button class="nav-tab" data-tab="game-logic">
+                    <span class="icon">♟️</span>Game Logic
+                </button>
+                <button class="nav-tab" data-tab="ui">
+                    <span class="icon">🎨</span>UI System
+                </button>
+                <button class="nav-tab" data-tab="compilation">
+                    <span class="icon">⚙️</span>Build Guide
+                </button>
+            </div>
         </div>
 
         <div class="content">
@@ -760,6 +783,8 @@
 
                 <h3>Required Directory Structure</h3>
                 <div class="code-block">
+                    <pre>
+
                     chess_game/
                     │
                     ├── main.cpp
@@ -792,6 +817,7 @@
                     ├── savegame.txt <span class="comment">(auto-generated)</span>
                     ├── highscores.dat <span class="comment">(auto-generated)</span>
                     └── settings.cfg <span class="comment">(auto-generated)</span>
+                </pre>
                 </div>
 
                 <h3>Common Compilation Issues</h3>
@@ -870,7 +896,7 @@
     </div>
 
     <script>
-        function showTab(tabName) {
+        function showTab(event, tabName) {
             // Hide all tab contents
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => content.classList.remove('active'));
@@ -883,8 +909,18 @@
             document.getElementById(tabName).classList.add('active');
 
             // Add active class to clicked tab
-            event.target.classList.add('active');
+            event.currentTarget.classList.add('active');
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function (event) {
+                    const tabName = this.getAttribute('data-tab');
+                    showTab(event, tabName);
+                });
+            });
+        });
     </script>
 </body>
 

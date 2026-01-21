@@ -188,10 +188,6 @@ header h1 {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: shimmer 4s linear infinite, slideDown 0.8s ease-out;
-    text-shadow:
-        0 0 30px rgba(255, 215, 0, 0.5),
-        0 0 60px rgba(255, 215, 0, 0.3),
-        0 5px 15px rgba(0, 0, 0, 0.8);
     letter-spacing: 2px;
     filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
 }
@@ -381,35 +377,369 @@ header p {
 /* =========================
    NAVIGATION / TABS
    ========================= */
-.nav-tabs {
-    display: flex;
-    background: var(--light-1);
-    border-bottom: 3px solid var(--primary-1);
-    overflow-x: auto;
+.nav-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.98);
+    overflow: hidden;
 }
 
+/* Mobile Menu Toggle */
+.menu-toggle {
+    display: none;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    box-shadow:
+        0 5px 15px rgba(255, 215, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.menu-toggle:hover {
+    transform: scale(1.1);
+    box-shadow:
+        0 8px 20px rgba(255, 215, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.menu-toggle:active {
+    transform: scale(0.95);
+}
+
+.hamburger {
+    width: 24px;
+    height: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    background: var(--deep-black);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle.active .hamburger span:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+}
+
+.menu-toggle.active .hamburger span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.menu-toggle.active .hamburger span:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+    position: relative;
+    display: flex;
+    background: linear-gradient(180deg, rgba(248, 249, 250, 1) 0%, rgba(255, 255, 255, 1) 100%);
+    border-bottom: 3px solid transparent;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) var(--light-1);
+    padding: 10px 20px 0 20px;
+}
+
+.nav-tabs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.nav-tabs::-webkit-scrollbar-track {
+    background: var(--light-1);
+    border-radius: 10px;
+}
+
+.nav-tabs::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-dark) 100%);
+    border-radius: 10px;
+}
+
+.nav-tabs::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold) 100%);
+}
+
+/* Active Tab Indicator */
+.tab-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--primary-1) 50%, var(--gold) 100%);
+    background-size: 200% 100%;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 3px 3px 0 0;
+    box-shadow:
+        0 0 20px rgba(255, 215, 0, 0.6),
+        0 -2px 10px rgba(102, 126, 234, 0.4);
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 200% 0%;
+    }
+}
+
+/* Tab Buttons */
 .nav-tab {
-    padding: 15px 25px;
+    position: relative;
+    padding: 18px 30px;
     cursor: pointer;
     border: none;
     background: transparent;
     font-size: 1em;
     font-weight: 600;
     color: #666;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     white-space: nowrap;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.nav-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg,
+            rgba(102, 126, 234, 0) 0%,
+            rgba(102, 126, 234, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.nav-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-1), transparent);
+    transition: transform 0.3s ease;
 }
 
 .nav-tab:hover {
-    background: var(--light-4);
     color: var(--primary-1);
+    transform: translateY(-3px);
 }
 
+.nav-tab:hover::before {
+    opacity: 1;
+}
+
+.nav-tab:hover::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* Icon for each tab */
+.nav-tab .icon {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 1.2em;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-tab:hover .icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+/* Active Tab State */
 .nav-tab.active {
-    background: white;
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(255, 255, 255, 0.95) 100%);
     color: var(--primary-1);
-    border-bottom: 3px solid var(--primary-1);
-    margin-bottom: -3px;
+    box-shadow:
+        0 -5px 20px rgba(102, 126, 234, 0.2),
+        0 5px 15px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transform: translateY(-3px);
+    font-weight: 700;
+}
+
+.nav-tab.active::before {
+    opacity: 1;
+    background: linear-gradient(180deg,
+            rgba(255, 215, 0, 0.1) 0%,
+            rgba(102, 126, 234, 0.1) 100%);
+}
+
+.nav-tab.active .icon {
+    color: var(--gold);
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+}
+
+/* Glow effect for active tab */
+.nav-tab.active::after {
+    transform: translateX(-50%) scaleX(1);
+    background: linear-gradient(90deg,
+            transparent,
+            var(--gold),
+            var(--primary-1),
+            var(--gold),
+            transparent);
+    height: 3px;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+/* Tab Content Area */
+.tab-content {
+    display: none;
+    padding: 40px;
+    background: white;
+    border-radius: 0 0 20px 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-content h2 {
+    color: var(--dark-1);
+    margin-bottom: 20px;
+    font-size: 2em;
+    background: linear-gradient(135deg, var(--primary-1), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.tab-content p {
+    color: #666;
+    line-height: 1.8;
+    font-size: 1.1em;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 968px) {
+    .nav-tabs {
+        padding: 10px 15px 0 15px;
+    }
+
+    .nav-tab {
+        padding: 16px 20px;
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-container {
+        border-radius: 15px;
+    }
+
+    .nav-tabs {
+        flex-direction: column;
+        padding: 60px 0 0 0;
+        max-height: 0;
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        overflow: hidden;
+        border-bottom: none;
+    }
+
+    .nav-tabs.mobile-open {
+        max-height: 600px;
+        opacity: 1;
+        padding: 60px 15px 15px 15px;
+    }
+
+    .nav-tab {
+        width: 100%;
+        text-align: left;
+        padding: 18px 25px;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        border-bottom: none;
+    }
+
+    .nav-tab.active {
+        transform: translateY(0);
+        margin-bottom: 8px;
+    }
+
+    .tab-indicator {
+        display: none;
+    }
+
+    .tab-content {
+        padding: 30px 20px;
+    }
+
+    .tab-content h2 {
+        font-size: 1.6em;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px 10px;
+    }
+
+    .nav-tab {
+        padding: 16px 20px;
+        font-size: 0.9em;
+    }
+
+    .nav-tab .icon {
+        font-size: 1.1em;
+    }
+
+    .tab-content {
+        padding: 25px 15px;
+    }
+
+    .tab-content h2 {
+        font-size: 1.4em;
+    }
+
+    .tab-content p {
+        font-size: 1em;
+    }
 }
 
 /* =========================
