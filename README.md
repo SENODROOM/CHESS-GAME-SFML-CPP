@@ -4,7 +4,6 @@ A fully-featured chess game implementation in C++ using the SFML (Simple and Fas
 
 ![Chess Game](https://img.shields.io/badge/Language-C++-blue.svg)
 ![SFML](https://img.shields.io/badge/Library-SFML%202.6.2-green.svg)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ---
 
@@ -27,7 +26,6 @@ A fully-featured chess game implementation in C++ using the SFML (Simple and Fas
 - [Troubleshooting](#-troubleshooting)
 - [Future Enhancements](#-future-enhancements)
 - [Contributing](#-contributing)
-- [License](#-license)
 
 ---
 
