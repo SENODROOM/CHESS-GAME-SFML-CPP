@@ -1372,3 +1372,608 @@ footer::after {
     color: #856404;
     border-left-color: var(--border-2);
 }
+
+/* =========================
+   ADDITIONAL MEDIA QUERIES FOR RESPONSIVENESS
+   ========================= */
+
+/* Large desktops (1200px and up) - Base styles already cover this */
+
+/* Desktops (992px - 1199px) */
+@media (max-width: 1199px) {
+    .container {
+        max-width: 960px;
+    }
+
+    .chess-project-overview-container {
+        max-width: 960px;
+    }
+
+    .chess-project-main-title {
+        font-size: 2.8em;
+    }
+
+    .chess-project-features-grid-container {
+        gap: 20px;
+    }
+
+    .chess-project-feature-card-item {
+        padding: 25px;
+    }
+
+    .content {
+        padding: 35px;
+    }
+
+    .module-card {
+        padding: 20px;
+    }
+
+    .architecture-diagram {
+        padding: 25px;
+    }
+
+    .feature-grid {
+        gap: 15px;
+    }
+
+    .feature-box {
+        padding: 20px;
+    }
+
+    th,
+    td {
+        padding: 12px;
+    }
+}
+
+/* Tablets (768px - 991px) */
+@media (max-width: 991px) {
+    .container {
+        max-width: 720px;
+    }
+
+    .chess-project-overview-container {
+        max-width: 720px;
+    }
+
+    body {
+        padding: 15px;
+    }
+
+    header {
+        padding: 30px;
+    }
+
+    header h1 {
+        font-size: 3.5em;
+    }
+
+    header p {
+        font-size: 1.2em;
+    }
+
+    .github-btn {
+        padding: 18px;
+        font-size: 1.1em;
+    }
+
+    .github-btn img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .chess-project-header-section {
+        padding: 50px 30px;
+    }
+
+    .chess-project-main-title {
+        font-size: 2.5em;
+    }
+
+    .chess-project-description-text {
+        font-size: 1em;
+    }
+
+    .chess-project-features-grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .chess-project-feature-card-item {
+        padding: 25px;
+    }
+
+    .chess-project-section-heading-secondary {
+        font-size: 1.8em;
+    }
+
+    .chess-project-table-header-cell,
+    .chess-project-table-data-cell {
+        padding: 15px;
+    }
+
+    .content {
+        padding: 30px;
+    }
+
+    .tab-content {
+        padding: 30px;
+    }
+
+    .tab-content h2 {
+        font-size: 1.8em;
+    }
+
+    h2 {
+        font-size: 1.8em;
+    }
+
+    h3 {
+        font-size: 1.3em;
+    }
+
+    .module-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3em;
+    }
+
+    .module-title {
+        font-size: 1.2em;
+    }
+
+    .function-item {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    .code-block {
+        padding: 15px;
+        font-size: 0.85em;
+    }
+
+    .flow-box {
+        padding: 12px 20px;
+        margin: 8px;
+    }
+
+    .arrow {
+        margin: 0 8px;
+        font-size: 1.3em;
+    }
+
+    .feature-box {
+        padding: 20px;
+    }
+
+    .feature-box h4 {
+        font-size: 1.1em;
+    }
+
+    th,
+    td {
+        padding: 10px 12px;
+    }
+
+    .compile-section {
+        padding: 15px;
+    }
+}
+
+/* Mobile landscape (576px - 767px) */
+@media (max-width: 767px) {
+    .container {
+        max-width: 540px;
+    }
+
+    .chess-project-overview-container {
+        max-width: 540px;
+    }
+
+    header h1 {
+        font-size: 3em;
+    }
+
+    header p {
+        font-size: 1.1em;
+    }
+
+    .github-btn {
+        padding: 15px;
+        font-size: 1em;
+        gap: 10px;
+    }
+
+    .github-btn img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .chess-project-header-section {
+        padding: 40px 20px;
+    }
+
+    .chess-project-main-title {
+        font-size: 2.2em;
+    }
+
+    .chess-project-description-text {
+        font-size: 0.95em;
+    }
+
+    .chess-project-features-grid-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .chess-project-feature-card-item {
+        padding: 20px;
+    }
+
+    .chess-project-section-heading-secondary {
+        font-size: 1.6em;
+        margin: 40px 0 20px;
+    }
+
+    .chess-project-file-structure-table {
+        font-size: 0.9em;
+    }
+
+    .chess-project-table-header-cell,
+    .chess-project-table-data-cell {
+        padding: 12px 15px;
+    }
+
+    .chess-project-filename-emphasis {
+        font-size: 1em;
+        padding: 4px 10px;
+    }
+
+    .chess-project-code-count-text {
+        font-size: 0.95em;
+        padding: 4px 6px;
+    }
+
+    .content {
+        padding: 25px;
+    }
+
+    .tab-content {
+        padding: 25px;
+    }
+
+    .tab-content h2 {
+        font-size: 1.6em;
+    }
+
+    .tab-content p {
+        font-size: 1em;
+    }
+
+    h2 {
+        font-size: 1.6em;
+        padding-bottom: 8px;
+    }
+
+    h3 {
+        font-size: 1.2em;
+        padding-left: 10px;
+    }
+
+    .module-card {
+        padding: 20px;
+        margin: 15px 0;
+    }
+
+    .module-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .module-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .function-list {
+        padding: 12px;
+    }
+
+    .function-item {
+        padding: 10px;
+        margin: 6px 0;
+    }
+
+    .code-block {
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .architecture-diagram {
+        padding: 20px;
+    }
+
+    .flow-box {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 15px;
+    }
+
+    .arrow {
+        display: block;
+        margin: 5px auto;
+        transform: rotate(90deg);
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-box {
+        padding: 20px;
+    }
+
+    table {
+        font-size: 0.9em;
+    }
+
+    th,
+    td {
+        padding: 10px;
+    }
+
+    .compile-section {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .compile-section h3 {
+        font-size: 1.2em;
+    }
+}
+
+/* Small mobile (480px and below) */
+@media (max-width: 479px) {
+    .container {
+        max-width: 100%;
+        border-radius: 15px;
+    }
+
+    .chess-project-overview-container {
+        max-width: 100%;
+    }
+
+    body {
+        padding: 10px;
+    }
+
+    header {
+        padding: 25px 15px;
+    }
+
+    header h1 {
+        font-size: 2.5em;
+        letter-spacing: 1px;
+    }
+
+    header h1::before,
+    header h1::after {
+        font-size: 0.4em;
+        left: -30px;
+    }
+
+    header h1::after {
+        right: -30px;
+    }
+
+    header p {
+        font-size: 1em;
+        margin-bottom: 30px;
+    }
+
+    .github-btn {
+        padding: 12px 20px;
+        font-size: 0.9em;
+        gap: 8px;
+        letter-spacing: 1px;
+    }
+
+    .github-btn img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .chess-project-header-section {
+        padding: 30px 15px;
+    }
+
+    .chess-project-main-title {
+        font-size: 1.8em;
+    }
+
+    .chess-project-description-text {
+        font-size: 0.9em;
+    }
+
+    .chess-project-feature-icon-title {
+        font-size: 1.3em;
+    }
+
+    .chess-project-feature-description-paragraph {
+        font-size: 0.9em;
+    }
+
+    .chess-project-section-heading-secondary {
+        font-size: 1.4em;
+        margin: 30px 0 15px;
+    }
+
+    .chess-project-table-header-cell,
+    .chess-project-table-data-cell {
+        padding: 10px;
+        font-size: 0.85em;
+    }
+
+    .chess-project-filename-emphasis {
+        font-size: 0.95em;
+        padding: 3px 8px;
+    }
+
+    .chess-project-code-count-text {
+        font-size: 0.9em;
+        padding: 3px 5px;
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .tab-content {
+        padding: 20px;
+    }
+
+    .tab-content h2 {
+        font-size: 1.4em;
+    }
+
+    .tab-content p {
+        font-size: 0.95em;
+    }
+
+    h2 {
+        font-size: 1.4em;
+    }
+
+    h3 {
+        font-size: 1.1em;
+    }
+
+    .module-card {
+        padding: 15px;
+    }
+
+    .module-title {
+        font-size: 1.1em;
+    }
+
+    .module-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+    }
+
+    .function-list {
+        padding: 10px;
+    }
+
+    .function-item {
+        padding: 8px;
+        font-size: 0.85em;
+    }
+
+    .code-block {
+        padding: 12px;
+        font-size: 0.8em;
+    }
+
+    .architecture-diagram {
+        padding: 15px;
+    }
+
+    .flow-box {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+
+    .feature-box {
+        padding: 15px;
+    }
+
+    .feature-box h4 {
+        font-size: 1em;
+    }
+
+    table {
+        font-size: 0.85em;
+    }
+
+    th,
+    td {
+        padding: 8px 10px;
+    }
+
+    .highlight {
+        padding: 1px 4px;
+        font-size: 0.8em;
+    }
+
+    .badge {
+        padding: 4px 10px;
+        font-size: 0.8em;
+        margin-left: 5px;
+    }
+
+    .compile-section {
+        padding: 12px;
+    }
+
+    .compile-section h3 {
+        font-size: 1.1em;
+    }
+}
+
+/* Extra small mobile (320px and below) */
+@media (max-width: 319px) {
+    body {
+        padding: 5px;
+    }
+
+    header {
+        padding: 20px 10px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    header p {
+        font-size: 0.9em;
+    }
+
+    .github-btn {
+        padding: 10px 15px;
+        font-size: 0.85em;
+    }
+
+    .chess-project-main-title {
+        font-size: 1.6em;
+    }
+
+    .chess-project-description-text {
+        font-size: 0.85em;
+    }
+
+    .chess-project-feature-card-item {
+        padding: 15px;
+    }
+
+    .chess-project-table-header-cell,
+    .chess-project-table-data-cell {
+        padding: 8px;
+        font-size: 0.8em;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .tab-content {
+        padding: 15px;
+    }
+
+    .code-block {
+        padding: 10px;
+        font-size: 0.75em;
+    }
+}
