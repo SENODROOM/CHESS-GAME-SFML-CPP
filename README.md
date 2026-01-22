@@ -194,7 +194,7 @@ choco install mingw
 
 #### Step 3: Clone/Download Project
 ```bash
-git clone https://github.com/yourusername/sfml-chess-game.git
+git clone https://github.com/SENODROOM/CHESS-GAME-SFML-CPP.git
 cd sfml-chess-game
 ```
 
