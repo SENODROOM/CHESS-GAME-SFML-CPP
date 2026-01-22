@@ -416,7 +416,7 @@ When the game ends:
          ▼                    │
 ┌─────────────────┐           │
 │   Game Loop     │           │
-│  (Event & Render)│          │
+│ (Event & Render)│           │
 └────────┬────────┘           │
          │                    │
          ▼                    │
