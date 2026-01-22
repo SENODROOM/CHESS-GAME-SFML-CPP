@@ -66,83 +66,113 @@
                     and game state management.
                 </p>
 
-                <div class="feature-grid">
-                    <div class="feature-box">
-                        <h4>♟️ Complete Chess Rules</h4>
-                        <p>All piece movements, check, checkmate, and stalemate detection</p>
+                <div class="chess-project-content-wrapper">
+                    <div class="chess-project-features-grid-container">
+                        <div class="chess-project-feature-card-item">
+                            <h4 class="chess-project-feature-icon-title">♟️ Complete Chess Rules</h4>
+                            <p class="chess-project-feature-description-paragraph">All piece movements, check,
+                                checkmate, and stalemate detection</p>
+                        </div>
+                        <div class="chess-project-feature-card-item">
+                            <h4 class="chess-project-feature-icon-title">🎨 Graphical Interface</h4>
+                            <p class="chess-project-feature-description-paragraph">Beautiful SFML-based board with
+                                custom piece sprites</p>
+                        </div>
+                        <div class="chess-project-feature-card-item">
+                            <h4 class="chess-project-feature-icon-title">💾 Save/Load System</h4>
+                            <p class="chess-project-feature-description-paragraph">Persistent game states and high score
+                                tracking</p>
+                        </div>
+                        <div class="chess-project-feature-card-item">
+                            <h4 class="chess-project-feature-icon-title">⚙️ Settings Management</h4>
+                            <p class="chess-project-feature-description-paragraph">Customizable sound and theme
+                                preferences</p>
+                        </div>
                     </div>
-                    <div class="feature-box">
-                        <h4>🎨 Graphical Interface</h4>
-                        <p>Beautiful SFML-based board with custom piece sprites</p>
-                    </div>
-                    <div class="feature-box">
-                        <h4>💾 Save/Load System</h4>
-                        <p>Persistent game states and high score tracking</p>
-                    </div>
-                    <div class="feature-box">
-                        <h4>⚙️ Settings Management</h4>
-                        <p>Customizable sound and theme preferences</p>
-                    </div>
-                </div>
 
-                <h3>File Structure</h3>
-                <table>
-                    <tr>
-                        <th>File</th>
-                        <th>Purpose</th>
-                        <th>Lines of Code</th>
-                    </tr>
-                    <tr>
-                        <td><strong>main.cpp</strong></td>
-                        <td>Main game loop and event handling</td>
-                        <td>~180</td>
-                    </tr>
-                    <tr>
-                        <td><strong>board.cpp/h</strong></td>
-                        <td>Board state and initialization</td>
-                        <td>~40</td>
-                    </tr>
-                    <tr>
-                        <td><strong>moves.cpp/h</strong></td>
-                        <td>Move validation for all pieces</td>
-                        <td>~150</td>
-                    </tr>
-                    <tr>
-                        <td><strong>checkmate.cpp/h</strong></td>
-                        <td>Check, checkmate, stalemate logic</td>
-                        <td>~250</td>
-                    </tr>
-                    <tr>
-                        <td><strong>render.cpp/h</strong></td>
-                        <td>Graphics rendering and textures</td>
-                        <td>~120</td>
-                    </tr>
-                    <tr>
-                        <td><strong>menu.cpp/h</strong></td>
-                        <td>Main menu and pause menu UI</td>
-                        <td>~280</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ending.cpp/h</strong></td>
-                        <td>End game screen and results</td>
-                        <td>~100</td>
-                    </tr>
-                    <tr>
-                        <td><strong>save.cpp/h</strong></td>
-                        <td>Game state serialization</td>
-                        <td>~50</td>
-                    </tr>
-                    <tr>
-                        <td><strong>settings.cpp/h</strong></td>
-                        <td>User preferences management</td>
-                        <td>~30</td>
-                    </tr>
-                    <tr>
-                        <td><strong>highscores.cpp/h</strong></td>
-                        <td>Win tracking and statistics</td>
-                        <td>~40</td>
-                    </tr>
-                </table>
+                    <h2 class="chess-project-section-heading-secondary">File Structure</h2>
+                    <table class="chess-project-file-structure-table">
+                        <thead>
+                            <tr class="chess-project-table-header-row">
+                                <th class="chess-project-table-header-cell">File</th>
+                                <th class="chess-project-table-header-cell">Purpose</th>
+                                <th class="chess-project-table-header-cell">Lines of Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">main.cpp</span></td>
+                                <td class="chess-project-table-data-cell">Main game loop and event handling</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~180</span></td>
+                            </tr>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">board.cpp/h</span></td>
+                                <td class="chess-project-table-data-cell">Board state and initialization</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~40</span></td>
+                            </tr>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">moves.cpp/h</span></td>
+                                <td class="chess-project-table-data-cell">Move validation for all pieces</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~150</span></td>
+                            </tr>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">checkmate.cpp/h</span></td>
+                                <td class="chess-project-table-data-cell">Check, checkmate, stalemate logic</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~250</span></td>
+                            </tr>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">render.cpp/h</span></td>
+                                <td class="chess-project-table-data-cell">Graphics rendering and textures</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~120</span></td>
+                            </tr>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">menu.cpp/h</span></td>
+                                <td class="chess-project-table-data-cell">Main menu and pause menu UI</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~280</span></td>
+                            </tr>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">ending.cpp/h</span></td>
+                                <td class="chess-project-table-data-cell">End game screen and results</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~100</span></td>
+                            </tr>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">save.cpp/h</span></td>
+                                <td class="chess-project-table-data-cell">Game state serialization</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~50</span></td>
+                            </tr>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">settings.cpp/h</span></td>
+                                <td class="chess-project-table-data-cell">User preferences management</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~30</span></td>
+                            </tr>
+                            <tr class="chess-project-table-data-row">
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-filename-emphasis">highscores.cpp/h</span></td>
+                                <td class="chess-project-table-data-cell">Win tracking and statistics</td>
+                                <td class="chess-project-table-data-cell"><span
+                                        class="chess-project-code-count-text">~40</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- ARCHITECTURE TAB -->

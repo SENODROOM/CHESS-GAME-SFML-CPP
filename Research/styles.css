@@ -776,6 +776,192 @@ header p {
 }
 
 /* =========================
+   PROJECT OVERVIEW:
+   ========================= */
+.chess-project-overview-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--light-1);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px var(--shadow-1);
+    overflow: hidden;
+}
+
+.chess-project-header-section {
+    background: linear-gradient(135deg, var(--primary-1) 0%, var(--primary-2) 100%);
+    padding: 60px 40px;
+    color: var(--light-1);
+    text-align: center;
+}
+
+.chess-project-main-title {
+    font-size: 3em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px var(--shadow-2);
+}
+
+.chess-project-description-text {
+    font-size: 1.1em;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0.95;
+}
+
+.chess-project-features-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin: 40px 0;
+}
+
+.chess-project-feature-card-item {
+    background: linear-gradient(135deg, var(--light-2) 0%, var(--light-3) 100%);
+    padding: 30px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.chess-project-feature-card-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px var(--shadow-2);
+    border-color: var(--primary-1);
+}
+
+.chess-project-feature-icon-title {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+}
+
+.chess-project-feature-description-paragraph {
+    color: var(--gray);
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+.chess-project-section-heading-secondary {
+    font-size: 2em;
+    color: var(--text-dark);
+    margin: 50px 0 30px 0;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--primary-1);
+}
+
+.chess-project-file-structure-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 30px;
+    box-shadow: 0 10px 40px var(--shadow-2);
+    border-radius: 15px;
+    overflow: hidden;
+    background: var(--light-1);
+}
+
+.chess-project-table-header-row {
+    background: linear-gradient(135deg, var(--primary-1) 0%, var(--primary-2) 100%);
+    color: var(--light-1);
+}
+
+.chess-project-table-header-cell {
+    padding: 10px 20px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 1.1em;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.chess-project-table-data-row {
+    background: var(--light-1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.chess-project-table-data-row:nth-child(even) {
+    background: var(--light-2);
+}
+
+.chess-project-table-data-row:hover {
+    background: var(--light-5);
+    transform: translateX(5px);
+    box-shadow: -5px 0 0 var(--primary-1);
+}
+
+.chess-project-table-data-row:hover .chess-project-filename-emphasis {
+    color: var(--primary-2);
+    transform: scale(1.05);
+}
+
+.chess-project-table-data-cell {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-1);
+    color: var(--gray);
+    vertical-align: middle;
+    transition: all 0.3s ease;
+}
+
+.chess-project-table-data-row:last-child .chess-project-table-data-cell {
+    border-bottom: none;
+}
+
+.chess-project-filename-emphasis {
+    color: var(--primary-1);
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    font-size: 1.05em;
+    display: inline-block;
+    transition: all 0.3s ease;
+    padding: 5px 12px;
+    background: var(--light-4);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary-1);
+}
+
+.chess-project-code-count-text {
+    color: var(--code-string);
+    font-weight: 600;
+    /* font-size: 1em; */
+    display: inline-block;
+    padding: 0px 8px;
+    background: var(--light-4);
+    border-radius: 20px;
+    border: 2px solid var(--code-string);
+}
+
+@media (max-width: 768px) {
+    .chess-project-main-title {
+        font-size: 2em;
+    }
+
+    .chess-project-header-section {
+        padding: 40px 20px;
+    }
+
+    .chess-project-content-wrapper {
+        padding: 30px 20px;
+    }
+
+    .chess-project-features-grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    .chess-project-file-structure-table {
+        font-size: 0.9em;
+    }
+
+    .chess-project-table-header-cell,
+    .chess-project-table-data-cell {
+        padding: 12px 10px;
+    }
+}
+
+/* =========================
    HEADINGS
    ========================= */
 h2 {
