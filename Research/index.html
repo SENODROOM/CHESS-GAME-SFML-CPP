@@ -23,6 +23,13 @@
                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub">
                 <span>GitHub Repository</span>
             </a>
+            <a href="Chess.pdf" download class="github-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path
+                        d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M10,19L12,15H9V10H15V15L13,19H10Z" />
+                </svg>
+                <span>Download PDF</span>
+            </a>
         </header>
 
         <div class="nav-container">
@@ -199,31 +206,29 @@
 
                 <h3>Data Flow Architecture</h3>
                 <div class="code-block">
-                    <span class="comment">// Global Board State (board.cpp)</span>
-                    <span class="type">char</span> board[<span class="string">8</span>][<span class="string">8</span>];
-                    <span class="comment">// Chess board representation</span>
-                    <span class="type">char</span> turn = <span class="string">'w'</span>; <span class="comment">//
-                        Current player ('w' or 'b')</span>
-                    <span class="type">int</span> whiteWins = <span class="string">0</span>; <span class="comment">//
-                        White victories</span>
-                    <span class="type">int</span> blackWins = <span class="string">0</span>; <span class="comment">//
-                        Black victories</span>
-
-                    <span class="comment">// Main Game Loop (main.cpp)</span>
-                    <span class="keyword">while</span> (window.isOpen() && inGame) {
-                    <span class="comment">// 1. Event Processing</span>
-                    <span class="keyword">if</span> (mouse click) {
-                    <span class="function">windowToBoard</span>(mousePos); <span class="comment">// Convert to board
-                        coords</span>
-                    <span class="function">isMoveValid</span>(from, to); <span class="comment">// Validate move</span>
-                    <span class="function">isKingInCheck</span>(side); <span class="comment">// Check legality</span>
-                    <span class="function">isCheckmate</span>(opponent); <span class="comment">// Win condition</span>
-                    }
-
-                    <span class="comment">// 2. Rendering</span>
-                    <span class="function">drawBoardAndPieces</span>(window);
-                    <span class="function">drawHighlight</span>(selectedSquare);
-                    }
+                    <pre>
+    <span class="comment">// Global Board State (board.cpp)</span>
+    <span class="type">char</span> board[<span class="string">8</span>][<span class="string">8</span>];
+    <span class="comment">// Chess board representation</span>
+    <span class="type">char</span> turn = <span class="string">'w'</span>; <span class="comment">// Current player ('w' or 'b')</span>
+    <span class="type">int</span> whiteWins = <span class="string">0</span>; <span class="comment">// White victories</span>
+    <span class="type">int</span> blackWins = <span class="string">0</span>; <span class="comment">// Black victories</span> 
+    <span class="comment">// Main Game Loop (main.cpp)</span>
+    <span class="keyword">while</span> (window.isOpen() && inGame) {
+        <span class="comment">// 1. Event Processing</span>
+        <span class="keyword">if</span> (mouse click) {
+        <span class="function">windowToBoard</span>(mousePos); <span class="comment">// Convert to board
+        coords</span>
+        <span class="function">isMoveValid</span>(from, to); <span class="comment">// Validate move</span>
+        <span class="function">isKingInCheck</span>(side); <span class="comment">// Check legality</span>
+        <span class="function">isCheckmate</span>(opponent); <span class="comment">// Win condition</span>
+        }
+                                        
+    <span class="comment">// 2. Rendering</span>
+    <span class="function">drawBoardAndPieces</span>(window);
+    <span class="function">drawHighlight</span>(selectedSquare);
+    }
+</pre>
                 </div>
 
                 <h3>Module Dependencies</h3>

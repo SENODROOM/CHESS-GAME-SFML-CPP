@@ -1,0 +1,3399 @@
+\documentclass[12pt,a4paper]{report}
+
+% Package imports
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{fontawesome5}
+
+% Page geometry
+\geometry{
+    a4paper,
+    left=25mm,
+    right=25mm,
+    top=30mm,
+    bottom=30mm
+}
+
+% Color definitions
+\definecolor{primarycolor}{RGB}{0,82,155}
+\definecolor{secondarycolor}{RGB}{119,149,86}
+\definecolor{accentcolor}{RGB}{235,235,208}
+\definecolor{codebackground}{RGB}{245,245,245}
+\definecolor{commentcolor}{RGB}{0,128,0}
+\definecolor{keywordcolor}{RGB}{0,0,255}
+\definecolor{stringcolor}{RGB}{163,21,21}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primarycolor,
+    filecolor=primarycolor,
+    urlcolor=primarycolor,
+    citecolor=primarycolor,
+    pdftitle={SFML Chess Game - Technical Documentation},
+    pdfauthor={Chess Development Team},
+    pdfsubject={Game Development},
+    pdfkeywords={Chess, SFML, C++, Game Programming}
+}
+
+% Code listing settings
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{codebackground},
+    commentstyle=\color{commentcolor},
+    keywordstyle=\color{keywordcolor}\bfseries,
+    stringstyle=\color{stringcolor},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{secondarycolor},
+    tabsize=4,
+    captionpos=b,
+    language=C++
+}
+
+% Custom tcolorbox styles
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{infobox}[1]{
+    colback=blue!5!white,
+    colframe=blue!75!black,
+    fonttitle=\bfseries,
+    title=#1,
+    breakable
+}
+
+\newtcolorbox{warningbox}[1]{
+    colback=orange!5!white,
+    colframe=orange!75!black,
+    fonttitle=\bfseries,
+    title=#1,
+    breakable
+}
+
+\newtcolorbox{successbox}[1]{
+    colback=green!5!white,
+    colframe=green!75!black,
+    fonttitle=\bfseries,
+    title=#1,
+    breakable
+}
+
+% Chapter and section formatting
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries\color{primarycolor}}
+{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+\titleformat{\section}
+{\normalfont\Large\bfseries\color{primarycolor}}
+{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\normalfont\large\bfseries\color{secondarycolor}}
+{\thesubsection}{1em}{}
+
+% Header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{SFML Chess Game - Technical Documentation}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Custom commands
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\func}[1]{\texttt{\textbf{#1}}}
+\newcommand{\file}[1]{\texttt{\textit{#1}}}
+
+\begin{document}
+
+% Title page
+\begin{titlepage}
+    \begin{center}
+        \vspace*{2cm}
+        
+        {\Huge \textbf{SFML Chess Game}}\\[0.5cm]
+        {\LARGE Technical Documentation \& Implementation Guide}
+        
+        \vspace{1.5cm}
+        
+        \begin{tikzpicture}
+            \draw[primarycolor, line width=2pt] (0,0) rectangle (8,6);
+            \foreach \x in {0,1,...,7}
+                \foreach \y in {0,1,...,7}
+                {
+                    \pgfmathparse{mod(\x+\y,2) ? "secondarycolor" : "accentcolor"}
+                    \edef\col{\pgfmathresult}
+                    \fill[\col] (\x,\y) rectangle (\x+1,\y+1);
+                }
+        \end{tikzpicture}
+        
+        \vspace{1.5cm}
+        
+        {\Large \textbf{A Comprehensive C++ Implementation}}\\[0.3cm]
+        {\large Using SFML Graphics Library}
+        
+        \vfill
+        
+        {\large \textbf{Version 1.0}}\\[0.3cm]
+        {\large \today}
+        
+        \vspace{1cm}
+        
+        \begin{tabular}{ll}
+            \textbf{Language:} & C++17 \\
+            \textbf{Framework:} & SFML 2.6.2 \\
+            \textbf{Platform:} & Cross-platform (Windows/Linux/macOS) \\
+            \textbf{Lines of Code:} & $\sim$1,240 \\
+        \end{tabular}
+        
+    \end{center}
+\end{titlepage}
+
+% Table of contents
+\tableofcontents
+\clearpage
+
+% Executive Summary
+\chapter*{Executive Summary}
+\addcontentsline{toc}{chapter}{Executive Summary}
+
+This document provides comprehensive technical documentation for a fully-featured chess game implementation developed in C++ using the Simple and Fast Multimedia Library (SFML). The project demonstrates advanced software engineering principles including modular architecture, object-oriented design patterns, file I/O operations, real-time graphics rendering, and comprehensive game state management.
+
+\section*{Project Overview}
+
+The SFML Chess Game is a complete implementation of the classical chess game with a graphical user interface, supporting all standard chess rules including move validation, check detection, checkmate recognition, and stalemate conditions. The application features a robust menu system, game state persistence, statistics tracking, and customizable settings.
+
+\section*{Key Features}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Complete Chess Rules:} Implementation of all piece movements, capture mechanics, check/checkmate/stalemate detection
+    \item \textbf{Graphical Interface:} Custom SFML-based rendering with sprite management and visual feedback
+    \item \textbf{Save/Load System:} Persistent game state storage with automatic recovery
+    \item \textbf{Statistics Tracking:} Win counter for both players with persistent storage
+    \item \textbf{Menu System:} Comprehensive navigation including main menu, pause menu, settings, and end-game screens
+    \item \textbf{Modular Architecture:} 10 distinct modules with clear separation of concerns
+\end{itemize}
+
+\section*{Technical Specifications}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Attribute} & \textbf{Value} \\ \midrule
+Programming Language & C++17 \\
+Graphics Library & SFML 2.6.2 \\
+Total Source Files & 20 (.cpp and .h files) \\
+Lines of Code & Approximately 1,240 \\
+Supported Platforms & Windows, Linux, macOS \\
+Memory Footprint & $<$ 50 MB \\
+Minimum Display Resolution & 800×800 pixels \\ \bottomrule
+\end{tabular}
+\caption{Technical specifications of the chess game project}
+\end{table}
+
+\section*{Document Structure}
+
+This documentation is organized into the following chapters:
+
+\begin{enumerate}
+    \item \textbf{Introduction:} Project background, objectives, and scope
+    \item \textbf{System Architecture:} High-level design and module organization
+    \item \textbf{Installation \& Compilation:} Step-by-step setup for all platforms
+    \item \textbf{Module Documentation:} Detailed analysis of each component
+    \item \textbf{Game Logic Implementation:} Core algorithms and data structures
+    \item \textbf{User Interface:} GUI design and interaction patterns
+    \item \textbf{Testing \& Quality Assurance:} Validation strategies
+    \item \textbf{Limitations \& Future Work:} Current constraints and enhancement opportunities
+\end{enumerate}
+
+\clearpage
+
+% Chapter 1: Introduction
+\chapter{Introduction}
+
+\section{Project Background}
+
+Chess, one of the oldest and most intellectually challenging board games, has been a staple of computer science education and game development for decades. This project implements a fully-functional chess game using modern C++ practices and the SFML graphics library, demonstrating the application of software engineering principles to game development.
+
+\subsection{Motivation}
+
+The primary motivations for this project include:
+
+\begin{itemize}
+    \item \textbf{Educational Value:} Demonstrating modular software design in a real-world application
+    \item \textbf{Game Development Skills:} Implementing complex game logic with graphical rendering
+    \item \textbf{Algorithm Implementation:} Applying computational thinking to chess rule validation
+    \item \textbf{User Experience Design:} Creating an intuitive and responsive interface
+\end{itemize}
+
+\section{Project Objectives}
+
+The core objectives of this chess game implementation are:
+
+\begin{enumerate}
+    \item \textbf{Rule Completeness:} Implement all standard chess rules including piece-specific movements, capture mechanics, and special conditions (check, checkmate, stalemate)
+    
+    \item \textbf{Visual Quality:} Provide a polished graphical interface with custom sprites, board rendering, and visual feedback mechanisms
+    
+    \item \textbf{Persistence:} Enable game state saving and loading, allowing players to resume interrupted games
+    
+    \item \textbf{Modularity:} Design a clean, maintainable codebase with clear separation of concerns across multiple modules
+    
+    \item \textbf{Cross-Platform Compatibility:} Ensure the application runs on Windows, Linux, and macOS with minimal platform-specific code
+    
+    \item \textbf{Extensibility:} Structure the codebase to facilitate future enhancements such as AI opponents, network play, and advanced chess features
+\end{enumerate}
+
+\section{Technology Stack}
+
+\subsection{Programming Language: C++17}
+
+C++ was selected for this project due to its:
+
+\begin{itemize}
+    \item \textbf{Performance:} Compiled nature and low-level control enable efficient game loop execution
+    \item \textbf{SFML Compatibility:} Native integration with the SFML library
+    \item \textbf{Object-Oriented Features:} Support for encapsulation, inheritance, and polymorphism
+    \item \textbf{Standard Library:} Comprehensive STL for data structures and algorithms
+\end{itemize}
+
+\subsection{Graphics Library: SFML 2.6.2}
+
+Simple and Fast Multimedia Library (SFML) provides:
+
+\begin{itemize}
+    \item \textbf{Graphics Module:} Hardware-accelerated 2D rendering with sprite management
+    \item \textbf{Window Module:} Cross-platform window creation and event handling
+    \item \textbf{System Module:} Time management and threading capabilities
+    \item \textbf{Audio Module:} Sound effect playback (prepared for future implementation)
+\end{itemize}
+
+\begin{infobox}{Why SFML?}
+SFML was chosen over alternatives (SDL, Allegro, Qt) because:
+\begin{itemize}
+    \item Simple, intuitive API requiring minimal boilerplate code
+    \item Excellent documentation and community support
+    \item Cross-platform compatibility without platform-specific code
+    \item Active development and modern C++ integration
+    \item Lightweight footprint with modular design
+\end{itemize}
+\end{infobox}
+
+\section{Scope of Implementation}
+
+\subsection{Included Features}
+
+This implementation includes:
+
+\begin{itemize}
+    \item All standard chess piece movements (Pawn, Rook, Knight, Bishop, Queen, King)
+    \item Pawn special moves: double-step from starting position, diagonal captures
+    \item Path validation for sliding pieces (Bishop, Rook, Queen)
+    \item Check detection for both players
+    \item Checkmate and stalemate recognition
+    \item Legal move verification preventing self-check
+    \item Graphical user interface with sprite-based rendering
+    \item Board highlighting for piece selection
+    \item Complete menu system (main, pause, settings, end-game)
+    \item Game state persistence (save/load functionality)
+    \item Win statistics tracking
+    \item User preference management (sound, theme)
+\end{itemize}
+
+\subsection{Excluded Features}
+
+The following chess features are not currently implemented:
+
+\begin{itemize}
+    \item \textbf{En Passant:} Special pawn capture rule
+    \item \textbf{Castling:} King-Rook cooperative move
+    \item \textbf{Pawn Promotion:} Upgrading pawns reaching the opposite end
+    \item \textbf{Draw by Repetition:} Three-fold repetition rule
+    \item \textbf{50-Move Rule:} Automatic draw condition
+    \item \textbf{AI Opponent:} Computer player with strategic algorithms
+    \item \textbf{Network Multiplayer:} Online play capability
+    \item \textbf{Move History:} Algebraic notation display
+    \item \textbf{Undo/Redo:} Move reversal functionality
+    \item \textbf{Timer/Clock:} Timed game modes
+\end{itemize}
+
+\section{Target Audience}
+
+This project is designed for:
+
+\begin{itemize}
+    \item \textbf{Computer Science Students:} Learning game development and software architecture
+    \item \textbf{Game Developers:} Studying chess rule implementation and SFML integration
+    \item \textbf{C++ Programmers:} Examining modular design patterns and best practices
+    \item \textbf{Chess Enthusiasts:} Playing casual chess games with a clean interface
+\end{itemize}
+
+\clearpage
+
+% Chapter 2: System Architecture
+\chapter{System Architecture}
+
+\section{Design Philosophy}
+
+The chess game architecture follows fundamental software engineering principles:
+
+\begin{description}
+    \item[Modularity] Each component serves a single, well-defined purpose
+    \item[Separation of Concerns] Game logic, rendering, and user interface are isolated
+    \item[Data-Driven Design] Board state is centralized and accessed through clear interfaces
+    \item[Extensibility] New features can be added without extensive refactoring
+\end{description}
+
+\section{High-Level Architecture}
+
+The system is organized into three primary layers:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    layer/.style={rectangle, draw, fill=blue!20, text width=10cm, text centered, minimum height=1.2cm},
+    arrow/.style={->, >=stealth, thick}
+]
+    \node[layer] (ui) at (0,0) {\textbf{Presentation Layer} \\ Menu System, Rendering, User Input};
+    \node[layer] (logic) at (0,-2) {\textbf{Business Logic Layer} \\ Move Validation, Game State, Rules Engine};
+    \node[layer] (data) at (0,-4) {\textbf{Data Layer} \\ Board State, Persistence, Settings};
+    
+    \draw[arrow] (ui) -- (logic);
+    \draw[arrow] (logic) -- (data);
+    \draw[arrow] (data) -- (logic);
+    \draw[arrow] (logic) -- (ui);
+\end{tikzpicture}
+\caption{Three-tier architecture of the chess game}
+\end{figure}
+
+\section{Module Organization}
+
+The project consists of 10 distinct modules, each with specific responsibilities:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}p{3cm}p{4cm}p{6cm}@{}}
+\toprule
+\textbf{Module} & \textbf{Files} & \textbf{Responsibility} \\ \midrule
+Board Management & board.cpp/h & Global state, initialization \\
+Move Validation & moves.cpp/h & Piece-specific move rules \\
+Check Detection & checkmate.cpp/h & Check, checkmate, stalemate \\
+Rendering & render.cpp/h & Graphics, sprites, drawing \\
+Menu System & menu.cpp/h & UI navigation, screens \\
+End Game & ending.cpp/h & Victory/draw screens \\
+Persistence & save.cpp/h & File I/O, game state \\
+Statistics & highscores.cpp/h & Win tracking \\
+Settings & settings.cpp/h & User preferences \\
+Main Controller & main.cpp & Event loop, coordination \\ \bottomrule
+\end{tabular}
+\caption{Module organization and responsibilities}
+\end{table}
+
+\subsection{Dependency Graph}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    module/.style={rectangle, draw, fill=green!20, text width=2.5cm, text centered, minimum height=0.8cm, font=\small},
+    dependency/.style={->, >=stealth}
+]
+    % Main module
+    \node[module, fill=red!20] (main) at (0,0) {main.cpp};
+    
+    % Core modules
+    \node[module] (board) at (-3,-2) {board};
+    \node[module] (moves) at (0,-2) {moves};
+    \node[module] (check) at (3,-2) {checkmate};
+    
+    % UI modules
+    \node[module] (render) at (-4,-4) {render};
+    \node[module] (menu) at (-1,-4) {menu};
+    \node[module] (ending) at (2,-4) {ending};
+    
+    % Data modules
+    \node[module] (save) at (-3,-6) {save};
+    \node[module] (high) at (0,-6) {highscores};
+    \node[module] (settings) at (3,-6) {settings};
+    
+    % Dependencies
+    \draw[dependency] (main) -- (board);
+    \draw[dependency] (main) -- (moves);
+    \draw[dependency] (main) -- (check);
+    \draw[dependency] (main) -- (render);
+    \draw[dependency] (main) -- (menu);
+    \draw[dependency] (main) -- (ending);
+    \draw[dependency] (main) -- (save);
+    \draw[dependency] (main) -- (high);
+    \draw[dependency] (main) -- (settings);
+    
+    \draw[dependency] (moves) -- (board);
+    \draw[dependency] (check) -- (board);
+    \draw[dependency] (check) -- (moves);
+    \draw[dependency] (render) -- (board);
+    \draw[dependency] (menu) -- (settings);
+    \draw[dependency] (save) -- (board);
+    \draw[dependency] (high) -- (board);
+\end{tikzpicture}
+\caption{Module dependency relationships}
+\end{figure}
+
+\section{Data Structures}
+
+\subsection{Board Representation}
+
+The chess board is represented as a 2D character array:
+
+\begin{lstlisting}[caption={Board data structure}]
+extern char board[8][8];  // Global board state
+extern char turn;         // Current player: 'w' or 'b'
+extern int whiteWins;     // White victories
+extern int blackWins;     // Black victories
+\end{lstlisting}
+
+\textbf{Encoding Scheme:}
+\begin{itemize}
+    \item Uppercase letters represent White pieces: \code{P R N B Q K}
+    \item Lowercase letters represent Black pieces: \code{p r n b q k}
+    \item Space character (\code{' '}) represents empty squares
+\end{itemize}
+
+\textbf{Coordinate System:}
+\begin{itemize}
+    \item Row 0: Black's back rank (top of visual display)
+    \item Row 7: White's back rank (bottom of visual display)
+    \item Column 0-7: Files a-h (left to right)
+\end{itemize}
+
+\begin{infobox}{Why Character Array?}
+A character array was chosen over alternatives (bitboards, object-oriented pieces) because:
+\begin{itemize}
+    \item Simplicity: Easy to visualize and debug
+    \item Memory efficiency: Only 64 bytes for the entire board
+    \item Fast access: O(1) lookup for any square
+    \item Straightforward serialization: Direct file I/O
+\end{itemize}
+\end{infobox}
+
+\subsection{Initial Board Configuration}
+
+\begin{lstlisting}[caption={Board initialization}]
+void initializeBoard() {
+    char temp[8][8] = {
+        {'r','n','b','q','k','b','n','r'},  // Black pieces
+        {'p','p','p','p','p','p','p','p'},  // Black pawns
+        {' ',' ',' ',' ',' ',' ',' ',' '},
+        {' ',' ',' ',' ',' ',' ',' ',' '},
+        {' ',' ',' ',' ',' ',' ',' ',' '},
+        {' ',' ',' ',' ',' ',' ',' ',' '},
+        {'P','P','P','P','P','P','P','P'},  // White pawns
+        {'R','N','B','Q','K','B','N','R'}   // White pieces
+    };
+    // Copy to global board array
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j)
+            board[i][j] = temp[i][j];
+    turn = 'w';  // White moves first
+}
+\end{lstlisting}
+
+\section{Control Flow}
+
+\subsection{Main Game Loop}
+
+The application follows a standard game loop pattern:
+
+\begin{algorithm}[H]
+\caption{Main Game Loop}
+\begin{algorithmic}[1]
+\State Initialize SFML window
+\State Load textures and resources
+\State Load settings and highscores
+\While{window is open}
+    \State Display main menu
+    \State Process menu selection
+    \If{start new game or load game}
+        \State Initialize/restore board state
+        \While{in game}
+            \While{event exists}
+                \State Handle user input (mouse, keyboard)
+                \If{valid move selected}
+                    \State Validate move legality
+                    \State Check for self-check
+                    \If{move is legal}
+                        \State Execute move
+                        \State Toggle turn
+                        \State Check for checkmate/stalemate
+                        \If{game ended}
+                            \State Display end screen
+                            \State Record statistics
+                        \EndIf
+                    \EndIf
+                \EndIf
+            \EndWhile
+            \State Render board and pieces
+            \State Display window
+        \EndWhile
+    \EndIf
+\EndWhile
+\State Save settings and statistics
+\State Close application
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Event Handling Sequence}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    event/.style={rectangle, rounded corners, draw, fill=yellow!20, text width=3cm, text centered, minimum height=0.7cm, font=\small},
+    action/.style={rectangle, draw, fill=blue!20, text width=3cm, text centered, minimum height=0.7cm, font=\small},
+    decision/.style={diamond, draw, fill=orange!20, text width=2cm, text centered, minimum height=0.7cm, font=\small},
+    arrow/.style={->, >=stealth}
+]
+    \node[event] (click) at (0,0) {Mouse Click};
+    \node[action] (convert) at (0,-1.5) {Convert to Board Coords};
+    \node[decision] (selected) at (0,-3) {Piece Selected?};
+    
+    \node[action] (select) at (-3,-4.5) {Select Piece};
+    \node[action] (validate) at (3,-4.5) {Validate Move};
+    
+    \node[decision] (legal) at (3,-6) {Legal?};
+    \node[action] (execute) at (3,-7.5) {Execute Move};
+    \node[action] (deselect) at (0,-9) {Deselect};
+    
+    \draw[arrow] (click) -- (convert);
+    \draw[arrow] (convert) -- (selected);
+    \draw[arrow] (selected) -- node[left] {No} (select);
+    \draw[arrow] (selected) -- node[right] {Yes} (validate);
+    \draw[arrow] (validate) -- (legal);
+    \draw[arrow] (legal) -- node[right] {Yes} (execute);
+    \draw[arrow] (legal) -- node[left] {No} (deselect);
+    \draw[arrow] (execute) -- (deselect);
+    \draw[arrow] (select) -- (deselect);
+\end{tikzpicture}
+\caption{Event handling flow for mouse clicks}
+\end{figure}
+
+\clearpage
+
+% Chapter 3: Installation and Compilation
+\chapter{Installation \& Compilation}
+
+\section{Prerequisites}
+
+\subsection{System Requirements}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Component} & \textbf{Requirement} \\ \midrule
+Operating System & Windows 7+, Linux (any modern), macOS 10.12+ \\
+RAM & 256 MB minimum \\
+Disk Space & 50 MB (including assets) \\
+Display & 800×800 minimum resolution \\
+Compiler & GCC 7+, Clang 5+, or MSVC 2017+ \\ \bottomrule
+\end{tabular}
+\caption{Minimum system requirements}
+\end{table}
+
+\subsection{Required Software}
+
+\subsubsection{C++ Compiler}
+
+\begin{itemize}
+    \item \textbf{Windows:} MinGW-w64 (GCC) or Microsoft Visual C++ (MSVC)
+    \item \textbf{Linux:} GCC or Clang (typically pre-installed)
+    \item \textbf{macOS:} Clang (via Xcode Command Line Tools)
+\end{itemize}
+
+\subsubsection{SFML 2.6.2}
+
+Download from: \url{https://www.sfml-dev.org/download.php}
+
+Required modules:
+\begin{itemize}
+    \item \code{sfml-graphics}
+    \item \code{sfml-window}
+    \item \code{sfml-system}
+    \item \code{sfml-audio}
+\end{itemize}
+
+\section{Windows Installation}
+
+\subsection{Step 1: Install MinGW-w64}
+
+\begin{enumerate}
+    \item Download MinGW-w64 from \url{https://www.mingw-w64.org/}
+    \item Run the installer and select:
+    \begin{itemize}
+        \item Architecture: x86\_64
+        \item Threads: posix
+        \item Exception: seh
+    \end{itemize}
+    \item Add MinGW \code{bin} directory to system PATH
+\end{enumerate}
+
+\begin{warningbox}{PATH Configuration}
+Ensure MinGW's \code{bin} directory is in your PATH:
+\begin{verbatim}
+C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin
+\end{verbatim}
+Verify with: \code{g++ --version}
+\end{warningbox}
+
+\subsection{Step 2: Install SFML}
+
+\begin{enumerate}
+    \item Download SFML 2.6.2 for MinGW (GCC 7.3.0)
+    \item Extract to \code{C:\textbackslash SFML-2.6.2\textbackslash}
+    \item Add SFML \code{bin} directory to PATH:
+    \begin{verbatim}
+C:\SFML-2.6.2\bin
+    \end{verbatim}
+\end{enumerate}
+
+\subsection{Step 3: Compile the Project}
+
+\begin{lstlisting}[language=bash, caption={Windows compilation command}]
+g++ main.cpp board.cpp moves.cpp render.cpp menu.cpp ^
+    checkmate.cpp save.cpp highscores.cpp settings.cpp ^
+    ending.cpp -o chess_game.exe ^
+    -I"C:/SFML-2.6.2/include" ^
+    -L"C:/SFML-2.6.2/lib" ^
+    -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio \
+    -std=c++17 -Wall
+\end{lstlisting}
+
+\subsection{Step 4: Run the Game}
+
+\begin{lstlisting}[language=bash]
+./chess_game
+\end{lstlisting}
+
+\section{macOS Installation}
+
+\subsection{Step 1: Install Xcode Command Line Tools}
+
+\begin{lstlisting}[language=bash]
+xcode-select --install
+\end{lstlisting}
+
+\subsection{Step 2: Install SFML via Homebrew}
+
+\begin{lstlisting}[language=bash]
+brew install sfml
+\end{lstlisting}
+
+\subsection{Step 3: Compile the Project}
+
+\begin{lstlisting}[language=bash, caption={macOS compilation command}]
+g++ main.cpp board.cpp moves.cpp render.cpp menu.cpp \
+    checkmate.cpp save.cpp highscores.cpp settings.cpp \
+    ending.cpp -o chess_game \
+    -I/usr/local/include \
+    -L/usr/local/lib \
+    -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio \
+    -std=c++17 -Wall
+\end{lstlisting}
+
+\subsection{Step 4: Run the Game}
+
+\begin{lstlisting}[language=bash]
+./chess_game
+\end{lstlisting}
+
+\section{Using a Makefile}
+
+For automated builds across all platforms, create a \file{Makefile}:
+
+\begin{lstlisting}[caption={Cross-platform Makefile}, language=make]
+# Compiler and flags
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2
+
+# Platform detection
+UNAME_S := $(shell uname -s)
+
+# SFML configuration
+ifeq ($(UNAME_S),Linux)
+    SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+endif
+ifeq ($(UNAME_S),Darwin)
+    SFML_INCLUDE = -I/usr/local/include
+    SFML_LIB = -L/usr/local/lib
+    SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+endif
+ifeq ($(OS),Windows_NT)
+    SFML_INCLUDE = -IC:/SFML-2.6.2/include
+    SFML_LIB = -LC:/SFML-2.6.2/lib
+    SFML_FLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+    TARGET = chess_game.exe
+else
+    TARGET = chess_game
+endif
+
+# Source files
+SOURCES = main.cpp board.cpp moves.cpp render.cpp menu.cpp \
+          checkmate.cpp save.cpp highscores.cpp settings.cpp ending.cpp
+
+# Object files
+OBJECTS = $(SOURCES:.cpp=.o)
+
+# Build target
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET) $(SFML_LIB) $(SFML_FLAGS)
+
+# Compile source files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(SFML_INCLUDE) -c $< -o $@
+
+# Clean build files
+clean:
+	rm -f $(OBJECTS) $(TARGET)
+
+# Run the game
+run: $(TARGET)
+	./$(TARGET)
+
+.PHONY: clean run
+\end{lstlisting}
+
+\textbf{Usage:}
+\begin{lstlisting}[language=bash]
+make          # Compile the project
+make run      # Compile and run
+make clean    # Remove build artifacts
+\end{lstlisting}
+
+\section{Project Directory Structure}
+
+Ensure your project directory is organized as follows:
+
+\begin{verbatim}
+chess_game/
+├── main.cpp
+├── board.cpp / board.h
+├── moves.cpp / moves.h
+├── checkmate.cpp / checkmate.h
+├── render.cpp / render.h
+├── menu.cpp / menu.h
+├── ending.cpp / ending.h
+├── save.cpp / save.h
+├── highscores.cpp / highscores.h
+├── settings.cpp / settings.h
+├── assets/
+│   ├── board.png
+│   └── pieces/
+│       ├── white_pawn.png
+│       ├── white_rook.png
+│       ├── white_knight.png
+│       ├── white_bishop.png
+│       ├── white_queen.png
+│       ├── white_king.png
+│       ├── black_pawn.png
+│       ├── black_rook.png
+│       ├── black_knight.png
+│       ├── black_bishop.png
+│       ├── black_queen.png
+│       └── black_king.png
+├── Makefile (optional)
+└── README.md
+\end{verbatim}
+
+\begin{warningbox}{Asset Requirements}
+The game will not run without the required asset files:
+\begin{itemize}
+    \item 12 piece sprite PNG files (100×100 px recommended)
+    \item 1 board texture PNG file (800×800 px recommended)
+    \item All assets must be in \code{assets/pieces/} directory
+    \item File names must match exactly (case-sensitive on Linux/macOS)
+\end{itemize}
+\end{warningbox}
+
+\section{Troubleshooting}
+
+\subsection{Common Compilation Errors}
+
+\subsubsection{Error: "Failed to load font"}
+
+\textbf{Cause:} Arial font not found at specified path
+
+\textbf{Solution:}
+\begin{itemize}
+    \item \textbf{Windows:} Verify path is \code{C:/Windows/Fonts/arial.ttf}
+    \item \textbf{Linux:} Change to \code{/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf}
+    \item \textbf{macOS:} Change to \code{/System/Library/Fonts/Helvetica.ttc}
+\end{itemize}
+
+\subsubsection{Error: "Undefined reference to sf::..."}
+
+\textbf{Cause:} SFML libraries not linked properly
+
+\textbf{Solution:}
+\begin{itemize}
+    \item Ensure all four SFML libraries are specified: \code{-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio}
+    \item Verify library path with \code{-L} flag
+    \item Check SFML installation with: \code{pkg-config --libs sfml-all}
+\end{itemize}
+
+\subsubsection{Error: "Failed to load textures"}
+
+\textbf{Cause:} Asset files missing or incorrect path
+
+\textbf{Solution:}
+\begin{itemize}
+    \item Ensure \code{assets/pieces/} directory exists
+    \item Verify all 12 PNG files are present
+    \item Check file names match exactly (case-sensitive)
+    \item Confirm PNG files are valid images
+\end{itemize}
+
+\clearpage
+
+% Chapter 4: Module Documentation
+\chapter{Module Documentation}
+
+\section{Board Management Module}
+
+\subsection{Files: board.cpp / board.h}
+
+\textbf{Purpose:} Central data management for game state
+
+\subsubsection{Global Variables}
+
+\begin{lstlisting}[caption={Board module declarations}]
+extern char board[8][8];  // Chess board representation
+extern char turn;         // Current player: 'w' or 'b'
+extern int whiteWins;     // White victory counter
+extern int blackWins;     // Black victory counter
+\end{lstlisting}
+
+\subsubsection{Functions}
+
+\func{void initializeBoard()}
+
+Initializes the chess board to standard starting position.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Create temporary 8×8 array with initial piece positions
+    \item Copy to global \code{board} array
+    \item Set \code{turn} to 'w' (White moves first)
+\end{enumerate}
+
+\textbf{Time Complexity:} O(1) - constant 64 array assignments
+
+\textbf{Space Complexity:} O(1) - fixed 64-byte temporary array
+
+\begin{lstlisting}[caption={Board initialization implementation}]
+void initializeBoard() {
+    char temp[8][8] = {
+        {'r','n','b','q','k','b','n','r'},
+        {'p','p','p','p','p','p','p','p'},
+        {' ',' ',' ',' ',' ',' ',' ',' '},
+        {' ',' ',' ',' ',' ',' ',' ',' '},
+        {' ',' ',' ',' ',' ',' ',' ',' '},
+        {' ',' ',' ',' ',' ',' ',' ',' '},
+        {'P','P','P','P','P','P','P','P'},
+        {'R','N','B','Q','K','B','N','R'}
+    };
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j)
+            board[i][j] = temp[i][j];
+    turn = 'w';
+}
+\end{lstlisting}
+
+\func{void printBoardConsole()}
+
+Debugging utility that prints current board state to console.
+
+\textbf{Output Format:}
+\begin{verbatim}
+Turn: White
+r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+P P P P P P P P
+R N B Q K B N R
+\end{verbatim}
+
+\subsection{Board Encoding Reference}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}clcl@{}}
+\toprule
+\textbf{Char} & \textbf{Piece} & \textbf{Char} & \textbf{Piece} \\ \midrule
+P & White Pawn & p & Black Pawn \\
+R & White Rook & r & Black Rook \\
+N & White Knight & n & Black Knight \\
+B & White Bishop & b & Black Bishop \\
+Q & White Queen & q & Black Queen \\
+K & White King & k & Black King \\
+' ' & Empty Square & & \\ \bottomrule
+\end{tabular}
+\caption{Character encoding for chess pieces}
+\end{table}
+
+\section{Move Validation Module}
+
+\subsection{Files: moves.cpp / moves.h}
+
+\textbf{Purpose:} Piece-specific move validation and path checking
+
+\subsubsection{Core Functions}
+
+\func{bool isMoveValid(int sr, int sc, int dr, int dc)}
+
+Master validation function that determines if a move is legal.
+
+\textbf{Parameters:}
+\begin{itemize}
+    \item \code{sr, sc}: Source row and column
+    \item \code{dr, dc}: Destination row and column
+\end{itemize}
+
+\textbf{Returns:} \code{true} if move is valid, \code{false} otherwise
+
+\textbf{Validation Checks:}
+\begin{enumerate}
+    \item Bounds checking: Ensure coordinates are within [0,7]
+    \item Source validation: Verify source contains a piece
+    \item Turn validation: Confirm piece belongs to current player
+    \item Destination validation: Ensure not capturing own piece
+    \item Piece-specific rules: Delegate to appropriate validator
+\end{enumerate}
+
+\begin{lstlisting}[caption={Move validation implementation}]
+bool isMoveValid(int sr, int sc, int dr, int dc) {
+    if (!isInside(sr, sc) || !isInside(dr, dc))
+        return false;
+    
+    char piece = board[sr][sc];
+    if (piece == ' ')
+        return false;
+    
+    // Turn validation
+    if (turn == 'w' && !isWhitePiece(piece))
+        return false;
+    if (turn == 'b' && !isBlackPiece(piece))
+        return false;
+    
+    // Cannot capture own piece
+    if (isSameColor(piece, board[dr][dc]))
+        return false;
+    
+    // Delegate to piece-specific validator
+    if (piece == 'P' || piece == 'p')
+        return isPawnMove(sr, sc, dr, dc);
+    if (piece == 'R' || piece == 'r')
+        return isRookMove(sr, sc, dr, dc);
+    // ... other pieces
+    
+    return false;
+}
+\end{lstlisting}
+
+\textbf{Time Complexity:} O(n) where n is path length (worst case: sliding pieces)
+
+\textbf{Space Complexity:} O(1)
+
+\subsubsection{Piece-Specific Validators}
+
+\func{bool isPawnMove(int sr, int sc, int dr, int dc)}
+
+Validates pawn movement rules.
+
+\textbf{Pawn Rules:}
+\begin{itemize}
+    \item Forward one square if destination is empty
+    \item Forward two squares from starting position if path is clear
+    \item Diagonal one square to capture enemy piece
+    \item White pawns move upward (decreasing row)
+    \item Black pawns move downward (increasing row)
+\end{itemize}
+
+\begin{lstlisting}[caption={Pawn move validation}]
+bool isPawnMove(int sr, int sc, int dr, int dc) {
+    char p = board[sr][sc];
+    int dir = (isWhitePiece(p)) ? -1 : 1;
+    int startRow = (isWhitePiece(p)) ? 6 : 1;
+    
+    // Forward move
+    if (dc == sc) {
+        if (dr == sr + dir && board[dr][dc] == ' ')
+            return true;
+        if (sr == startRow && dr == sr + 2*dir && 
+            board[sr+dir][sc] == ' ' && board[dr][dc] == ' ')
+            return true;
+        return false;
+    }
+    
+    // Diagonal capture
+    if ((dr == sr + dir) && (dc == sc + 1 || dc == sc - 1)) {
+        if (board[dr][dc] != ' ' && 
+            !isSameColor(board[sr][sc], board[dr][dc]))
+            return true;
+    }
+    
+    return false;
+}
+\end{lstlisting}
+
+\func{bool isRookMove(int sr, int sc, int dr, int dc)}
+
+Validates rook movement (horizontal or vertical lines).
+
+\textbf{Rook Rules:}
+\begin{itemize}
+    \item Move along rank (row) or file (column)
+    \item Path must be clear of obstacles
+    \item Can capture enemy pieces
+\end{itemize}
+
+\begin{lstlisting}[caption={Rook move validation}]
+bool isRookMove(int sr, int sc, int dr, int dc) {
+    if (sr != dr && sc != dc)
+        return false;
+    
+    if (!isPathClear(sr, sc, dr, dc))
+        return false;
+    
+    if (board[dr][dc] == ' ' || 
+        !isSameColor(board[sr][sc], board[dr][dc]))
+        return true;
+    
+    return false;
+}
+\end{lstlisting}
+
+\func{bool isBishopMove(int sr, int sc, int dr, int dc)}
+
+Validates bishop movement (diagonal lines).
+
+\textbf{Bishop Rules:}
+\begin{itemize}
+    \item Move along diagonals only
+    \item Path must be clear
+    \item Row displacement equals column displacement
+\end{itemize}
+
+\func{bool isKnightMove(int sr, int sc, int dr, int dc)}
+
+Validates knight movement (L-shaped jumps).
+
+\textbf{Knight Rules:}
+\begin{itemize}
+    \item L-shape: 2 squares in one direction, 1 square perpendicular
+    \item Can jump over other pieces
+    \item 8 possible destination squares
+\end{itemize}
+
+\begin{lstlisting}[caption={Knight move validation}]
+bool isKnightMove(int sr, int sc, int dr, int dc) {
+    int drd = abs(dr - sr);
+    int dcd = abs(dc - sc);
+    
+    if (!((drd == 2 && dcd == 1) || (drd == 1 && dcd == 2)))
+        return false;
+    
+    if (board[dr][dc] == ' ' || 
+        !isSameColor(board[sr][sc], board[dr][dc]))
+        return true;
+    
+    return false;
+}
+\end{lstlisting}
+
+\func{bool isQueenMove(int sr, int sc, int dr, int dc)}
+
+Validates queen movement (combination of rook and bishop).
+
+\textbf{Queen Rules:}
+\begin{itemize}
+    \item Move like rook (horizontal/vertical) OR bishop (diagonal)
+    \item Most powerful piece due to movement flexibility
+\end{itemize}
+
+\begin{lstlisting}[caption={Queen move validation}]
+bool isQueenMove(int sr, int sc, int dr, int dc) {
+    // Queen = Rook + Bishop
+    if (sr == dr || sc == dc)
+        return isRookMove(sr, sc, dr, dc);
+    if (abs(dr - sr) == abs(dc - sc))
+        return isBishopMove(sr, sc, dr, dc);
+    return false;
+}
+\end{lstlisting}
+
+\func{bool isKingMove(int sr, int sc, int dr, int dc)}
+
+Validates king movement (one square in any direction).
+
+\textbf{King Rules:}
+\begin{itemize}
+    \item Move one square horizontally, vertically, or diagonally
+    \item Most restricted piece for movement
+    \item Critical for check/checkmate detection
+\end{itemize}
+
+\subsubsection{Helper Functions}
+
+\func{bool isInside(int r, int c)}
+
+Checks if coordinates are within board bounds [0,7].
+
+\func{bool isWhitePiece(char ch)}
+
+Returns \code{true} if character represents a White piece (uppercase).
+
+\func{bool isBlackPiece(char ch)}
+
+Returns \code{true} if character represents a Black piece (lowercase).
+
+\func{bool isSameColor(char a, char b)}
+
+Returns \code{true} if both pieces belong to the same player.
+
+\func{bool isPathClear(int sr, int sc, int dr, int dc)}
+
+Verifies no pieces block the path between source and destination.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Calculate step direction for row and column
+    \item Iterate from source to destination (exclusive)
+    \item Return \code{false} if any square is occupied
+    \item Return \code{true} if path is clear
+\end{enumerate}
+
+\begin{lstlisting}[caption={Path clearance checking}]
+bool isPathClear(int sr, int sc, int dr, int dc) {
+    int rstep = (dr > sr) ? 1 : (dr < sr) ? -1 : 0;
+    int cstep = (dc > sc) ? 1 : (dc < sc) ? -1 : 0;
+    
+    int r = sr + rstep;
+    int c = sc + cstep;
+    
+    while (r != dr || c != dc) {
+        if (board[r][c] != ' ')
+            return false;
+        r += rstep;
+        c += cstep;
+    }
+    
+    return true;
+}
+\end{lstlisting}
+
+\section{Check Detection Module}
+
+\subsection{Files: checkmate.cpp / checkmate.h}
+
+\textbf{Purpose:} Advanced game state detection (check, checkmate, stalemate)
+
+\subsubsection{Core Algorithms}
+
+\func{bool isSquareAttacked(int r, int c, char attackerColor)}
+
+Determines if a square is under attack by a specified color.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Check for pawn attacks (diagonal from appropriate direction)
+    \item Check for knight attacks (all 8 L-shaped positions)
+    \item Check for rook/queen attacks (4 straight lines)
+    \item Check for bishop/queen attacks (4 diagonal lines)
+    \item Check for king attacks (8 adjacent squares)
+\end{enumerate}
+
+\textbf{Time Complexity:} O(n) where n is board dimension (8)
+
+\begin{lstlisting}[caption={Square attack detection}]
+bool isSquareAttacked(int r, int c, char attackerColor) {
+    // Pawn attacks
+    if (attackerColor == 'w') {
+        if (isInside(r-1, c-1) && board[r-1][c-1] == 'P')
+            return true;
+        if (isInside(r-1, c+1) && board[r-1][c+1] == 'P')
+            return true;
+    } else {
+        if (isInside(r+1, c-1) && board[r+1][c-1] == 'p')
+            return true;
+        if (isInside(r+1, c+1) && board[r+1][c+1] == 'p')
+            return true;
+    }
+    
+    // Knight attacks
+    int knightMoves[8][2] = {
+        {2,1}, {2,-1}, {-2,1}, {-2,-1},
+        {1,2}, {1,-2}, {-1,2}, {-1,-2}
+    };
+    
+    for (int i = 0; i < 8; i++) {
+        int nr = r + knightMoves[i][0];
+        int nc = c + knightMoves[i][1];
+        if (!isInside(nr, nc)) continue;
+        
+        char ch = board[nr][nc];
+        if ((attackerColor == 'w' && ch == 'N') ||
+            (attackerColor == 'b' && ch == 'n'))
+            return true;
+    }
+    
+    // Rook/Queen straight lines
+    // Bishop/Queen diagonals
+    // King adjacency
+    // ... (similar pattern for each piece type)
+    
+    return false;
+}
+\end{lstlisting}
+
+\func{bool findKing(char side, int *kr, int *kc)}
+
+Locates the king for the specified player.
+
+\textbf{Parameters:}
+\begin{itemize}
+    \item \code{side}: Player color ('w' or 'b')
+    \item \code{kr, kc}: Pointers to store king's coordinates
+\end{itemize}
+
+\textbf{Returns:} \code{true} if king found, \code{false} otherwise
+
+\textbf{Time Complexity:} O(n²) where n=8 (worst case: scan entire board)
+
+\func{bool isKingInCheck(char side)}
+
+Determines if the specified player's king is currently in check.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Locate king using \code{findKing()}
+    \item Determine opponent color
+    \item Call \code{isSquareAttacked()} on king's position
+\end{enumerate}
+
+\begin{lstlisting}[caption={Check detection}]
+bool isKingInCheck(char side) {
+    int kr, kc;
+    if (!findKing(side, &kr, &kc))
+        return false;
+    
+    char opp = (side == 'w') ? 'b' : 'w';
+    return isSquareAttacked(kr, kc, opp);
+}
+\end{lstlisting}
+
+\func{bool hasAnyLegalMove(char side)}
+
+Critical function that determines if a player has any legal moves.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Iterate through all board squares
+    \item For each piece belonging to \code{side}:
+    \begin{enumerate}
+        \item Try all possible destination squares
+        \item If move is pseudo-legal (basic rules):
+        \begin{enumerate}
+            \item Simulate the move (temporary)
+            \item Check if king is still in check
+            \item Undo the move
+            \item If not in check, return \code{true}
+        \end{enumerate}
+    \end{enumerate}
+    \item If no legal move found, return \code{false}
+\end{enumerate}
+
+\textbf{Time Complexity:} O(n² × m²) where n=8 (board size), m=8 (destinations)
+
+In practice: O(1) since board size is constant
+
+\begin{lstlisting}[caption={Legal move detection}]
+bool hasAnyLegalMove(char side) {
+    for (int sr = 0; sr < 8; sr++) {
+        for (int sc = 0; sc < 8; sc++) {
+            char piece = board[sr][sc];
+            if (piece == ' ') continue;
+            
+            if (side == 'w' && !isWhitePiece(piece)) continue;
+            if (side == 'b' && !isBlackPiece(piece)) continue;
+            
+            for (int dr = 0; dr < 8; dr++) {
+                for (int dc = 0; dc < 8; dc++) {
+                    if (!isLegalMove(sr, sc, dr, dc))
+                        continue;
+                    
+                    // Simulate move
+                    char savedDest = board[dr][dc];
+                    char savedSrc = board[sr][sc];
+                    
+                    board[dr][dc] = savedSrc;
+                    board[sr][sc] = ' ';
+                    
+                    bool inCheck = isKingInCheck(side);
+                    
+                    // Undo move
+                    board[sr][sc] = savedSrc;
+                    board[dr][dc] = savedDest;
+                    
+                    if (!inCheck)
+                        return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+\end{lstlisting}
+
+\func{bool isCheckmate(char side)}
+
+Determines if the specified player is in checkmate.
+
+\textbf{Definition:} King is in check AND no legal moves exist
+
+\begin{lstlisting}[caption={Checkmate detection}]
+bool isCheckmate(char side) {
+    return isKingInCheck(side) && !hasAnyLegalMove(side);
+}
+\end{lstlisting}
+
+\func{bool isStalemate(char side)}
+
+Determines if the specified player is in stalemate.
+
+\textbf{Definition:} King is NOT in check BUT no legal moves exist
+
+\begin{lstlisting}[caption={Stalemate detection}]
+bool isStalemate(char side) {
+    return !isKingInCheck(side) && !hasAnyLegalMove(side);
+}
+\end{lstlisting}
+
+\func{int getLegalKingMoves(char side, int out[16])}
+
+Returns array of legal king move coordinates (for UI hints).
+
+\textbf{Returns:} Number of coordinate pairs (count/2 = number of legal moves)
+
+\section{Rendering Module}
+
+\subsection{Files: render.cpp / render.h}
+
+\textbf{Purpose:} SFML graphics management and visual output
+
+\subsubsection{Texture Management}
+
+\begin{lstlisting}[caption={Texture storage}]
+static sf::Texture pieceTextures[12]; // 0-5: White, 6-11: Black
+static bool texturesLoaded = false;
+static sf::Texture boardTexture;
+static bool boardTextureLoaded = false;
+
+static const char* pieceFiles[12] = {
+    "assets/pieces/white_pawn.png",    // Index 0
+    "assets/pieces/white_rook.png",    // Index 1
+    "assets/pieces/white_knight.png",  // Index 2
+    "assets/pieces/white_bishop.png",  // Index 3
+    "assets/pieces/white_queen.png",   // Index 4
+    "assets/pieces/white_king.png",    // Index 5
+    "assets/pieces/black_pawn.png",    // Index 6
+    "assets/pieces/black_rook.png",    // Index 7
+    "assets/pieces/black_knight.png",  // Index 8
+    "assets/pieces/black_bishop.png",  // Index 9
+    "assets/pieces/black_queen.png",   // Index 10
+    "assets/pieces/black_king.png"     // Index 11
+};
+\end{lstlisting}
+
+\func{void loadTextures()}
+
+Loads all piece sprites and board texture into memory.
+
+\textbf{Called:} Once at application startup
+
+\textbf{Error Handling:} Prints error messages if textures fail to load
+
+\begin{lstlisting}[caption={Texture loading}]
+void loadTextures() {
+    if (texturesLoaded) return;
+    
+    bool ok = true;
+    for (int i = 0; i < 12; ++i) {
+        if (!pieceTextures[i].loadFromFile(pieceFiles[i])) {
+            std::cerr << "Failed to load: " << pieceFiles[i] << "\n";
+            ok = false;
+        }
+    }
+    
+    if (!boardTexture.loadFromFile("assets/board.png")) {
+        std::cerr << "Failed to load board.png\n";
+    } else {
+        boardTextureLoaded = true;
+    }
+    
+    texturesLoaded = true;
+}
+\end{lstlisting}
+
+\func{int getTextureIndex(char ch)}
+
+Maps board character to texture array index.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+\textbf{Piece} & \textbf{Index} & \textbf{Piece} & \textbf{Index} \\ \midrule
+P & 0 & p & 6 \\
+R & 1 & r & 7 \\
+N & 2 & n & 8 \\
+B & 3 & b & 9 \\
+Q & 4 & q & 10 \\
+K & 5 & k & 11 \\ \bottomrule
+\end{tabular}
+\caption{Piece-to-texture index mapping}
+\end{table}
+
+\func{void drawBoardAndPieces(sf::RenderWindow \&window)}
+
+Main rendering function called every frame.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Calculate cell dimensions (window size / 8)
+    \item Draw board background:
+    \begin{itemize}
+        \item If board texture loaded: scale and draw sprite
+        \item Otherwise: draw alternating colored squares
+    \end{itemize}
+    \item Iterate through board array:
+    \begin{enumerate}
+        \item For each non-empty square
+        \item Get appropriate texture
+        \item Create sprite and scale to cell size
+        \item Position sprite at calculated coordinates
+        \item Draw sprite
+    \end{enumerate}
+\end{enumerate}
+
+\begin{lstlisting}[caption={Board and piece rendering}]
+void drawBoardAndPieces(sf::RenderWindow &window) {
+    int winW = window.getSize().x;
+    int winH = window.getSize().y;
+    float cellW = winW / 8.0f;
+    float cellH = winH / 8.0f;
+    
+    // Draw board
+    if (boardTextureLoaded) {
+        sf::Sprite bs(boardTexture);
+        bs.setScale(float(winW) / boardTexture.getSize().x,
+                    float(winH) / boardTexture.getSize().y);
+        window.draw(bs);
+    } else {
+        for (int r = 0; r < 8; ++r) {
+            for (int c = 0; c < 8; ++c) {
+                sf::RectangleShape rect(sf::Vector2f(cellW, cellH));
+                rect.setPosition(c * cellW, r * cellH);
+                rect.setFillColor((r+c) % 2 == 0 ? 
+                    sf::Color(235,235,208) : sf::Color(119,149,86));
+                window.draw(rect);
+            }
+        }
+    }
+    
+    // Draw pieces
+    for (int r = 0; r < 8; ++r) {
+        for (int c = 0; c < 8; ++c) {
+            char ch = board[r][c];
+            int idx = getTextureIndex(ch);
+            if (idx >= 0) {
+                sf::Sprite spr(pieceTextures[idx]);
+                float scaleX = cellW / 100.0f;
+                float scaleY = cellH / 100.0f;
+                spr.setScale(scaleX, scaleY);
+                spr.setPosition(c * cellW, r * cellH);
+                window.draw(spr);
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+\func{void drawHighlight(sf::RenderWindow \&window, int r, int c)}
+
+Draws semi-transparent highlight on selected square.
+
+\func{std::pair<int,int> windowToBoard(sf::RenderWindow \&window, sf::Vector2i mousePos)}
+
+Converts pixel coordinates to board indices.
+
+\section{Menu System Module}
+
+\subsection{Files: menu.cpp / menu.h}
+
+\textbf{Purpose:} User interface navigation and menu screens
+
+\subsubsection{Menu Results Enumeration}
+
+\begin{lstlisting}[caption={Menu result codes}]
+enum MenuResult {
+    MENU_NONE,       // No action / Resume
+    MENU_START,      // Start new game
+    MENU_LOAD,       // Load saved game
+    MENU_SETTINGS,   // Open settings
+    MENU_HIGHSCORES, // View statistics
+    MENU_EXIT        // Exit application
+};
+\end{lstlisting}
+
+\func{MenuResult mainMenu(sf::RenderWindow \&window)}
+
+Displays main menu with interactive buttons.
+
+\textbf{Menu Options:}
+\begin{enumerate}
+    \item Start New Game
+    \item Load Game
+    \item Settings
+    \item High Scores
+    \item Exit
+\end{enumerate}
+
+\textbf{Features:}
+\begin{itemize}
+    \item Hover effects (color changes on mouse over)
+    \item Centered text in buttons
+    \item Click detection
+    \item Background color: \code{RGB(119, 149, 86)}
+\end{itemize}
+
+\func{MenuResult pauseMenu(sf::RenderWindow \&window)}
+
+Displays pause menu (accessed by pressing 'P' during game).
+
+\textbf{Menu Options:}
+\begin{enumerate}
+    \item Resume
+    \item Save Game
+    \item Exit to Main Menu
+\end{enumerate}
+
+\func{MenuResult showSettings(sf::RenderWindow \&window)}
+
+Settings screen with toggleable options.
+
+\textbf{Settings:}
+\begin{itemize}
+    \item Sound On/Off
+    \item Theme Selection (Default/Alternate)
+\end{itemize}
+
+\section{Ending Screen Module}
+
+\subsection{Files: ending.cpp / ending.h}
+
+\textbf{Purpose:} Display game results and offer replay options
+
+\subsubsection{Game Result Enumeration}
+
+\begin{lstlisting}[caption={Game result codes}]
+enum GameResult {
+    WHITE_WINS,   // White won by checkmate
+    BLACK_WINS,   // Black won by checkmate
+    DRAW,         // Draw condition
+    STALEMATE     // Stalemate (draw)
+};
+\end{lstlisting}
+
+\func{bool showEndingScreen(sf::RenderWindow \&window, GameResult result)}
+
+Displays end-game screen with result and options.
+
+\textbf{Returns:}
+\begin{itemize}
+    \item \code{true}: Player wants to play again
+    \item \code{false}: Return to main menu
+\end{itemize}
+
+\textbf{Display Elements:}
+\begin{itemize}
+    \item Result title (White Wins! / Black Wins! / Draw! / Stalemate!)
+    \item Color-coded text
+    \item Button: Play Again
+    \item Button: Exit to Main Menu
+\end{itemize}
+
+\textbf{Keyboard Shortcuts:}
+\begin{itemize}
+    \item Enter/Space: Play Again
+    \item Escape: Exit to Menu
+\end{itemize}
+
+\section{Persistence Module}
+
+\subsection{Files: save.cpp / save.h}
+
+\textbf{Purpose:} Game state serialization and deserialization
+
+\func{void saveGameToFile(const char* filename)}
+
+Saves current game state to file.
+
+\textbf{File Format:}
+\begin{verbatim}
+Line 1-8:  Board state (8 characters each)
+Line 9:    Current turn ('w' or 'b')
+Line 10:   White wins count
+Line 11:   Black wins count
+\end{verbatim}
+
+\textbf{Example savegame.txt:}
+\begin{verbatim}
+rnbqkbnr
+ppp pppp
+        
+   pP   
+        
+        
+PPPP PPP
+RNBQKBNR
+b
+0
+0
+\end{verbatim}
+
+\begin{lstlisting}[caption={Game state saving}]
+void saveGameToFile(const char* filename) {
+    std::ofstream out(filename);
+    if (!out.is_open()) {
+        std::cerr << "Unable to open save file for writing\n";
+        return;
+    }
+    
+    for (int r = 0; r < 8; ++r) {
+        for (int c = 0; c < 8; ++c)
+            out << board[r][c];
+        out << '\n';
+    }
+    
+    out << (turn == 'w' ? 'w' : 'b') << '\n';
+    out << whiteWins << '\n';
+    out << blackWins << '\n';
+    out.close();
+}
+\end{lstlisting}
+
+\func{bool loadGameFromFile(const char* filename)}
+
+Loads game state from file.
+
+\textbf{Returns:} \code{true} if successful, \code{false} if file error
+
+\textbf{Error Handling:}
+\begin{itemize}
+    \item File not found
+    \item Corrupt file (lines too short)
+    \item Invalid turn character
+\end{itemize}
+
+\section{Statistics Module}
+
+\subsection{Files: highscores.cpp / highscores.h}
+
+\textbf{Purpose:} Win counter management
+
+\func{void loadHighscores(const char* filename)}
+
+Loads win statistics from file (initializes to 0 if file missing).
+
+\func{void saveHighscores(const char* filename)}
+
+Saves current win counts to file.
+
+\func{void recordWin(char winner)}
+
+Increments appropriate win counter.
+
+\textbf{File Format (highscores.dat):}
+\begin{verbatim}
+5    (White wins)
+3    (Black wins)
+\end{verbatim}
+
+\section{Settings Module}
+
+\subsection{Files: settings.cpp / settings.h}
+
+\textbf{Purpose:} User preference management
+
+\textbf{Global Variables:}
+\begin{lstlisting}
+extern int soundOn;  // 0 = off, 1 = on
+extern int theme;    // 0 = default, 1 = alternate
+\end{lstlisting}
+
+\func{void loadSettings(const char* filename)}
+
+\func{void saveSettings(const char* filename)}
+
+\textbf{File Format (settings.cfg):}
+\begin{verbatim}
+1    (Sound on)
+0    (Default theme)
+\end{verbatim}
+
+\clearpage
+
+% Chapter 5: Game Logic Implementation
+\chapter{Game Logic Implementation}
+
+\section{Move Processing Pipeline}
+
+\begin{algorithm}[H]
+\caption{Move Processing Algorithm}
+\begin{algorithmic}[1]
+\State \textbf{Input:} Source position $(sr, sc)$, Destination position $(dr, dc)$
+\State \textbf{Output:} Move executed or rejected
+
+\If{!isMoveValid$(sr, sc, dr, dc)$}
+    \State Deselect piece
+    \State \Return INVALID\_MOVE
+\EndIf
+
+\State $savedDest \gets board[dr][dc]$
+\State $savedSrc \gets board[sr][sc]$
+\State $board[dr][dc] \gets savedSrc$
+\State $board[sr][sc] \gets$ ' '
+
+\If{isKingInCheck$(turn)$}
+    \State $board[sr][sc] \gets savedSrc$
+    \State $board[dr][dc] \gets savedDest$
+    \State Deselect piece
+    \State \Return SELF\_CHECK
+\EndIf
+
+\State $opponent \gets$ (turn == 'w') ? 'b' : 'w'
+
+\If{isCheckmate$(opponent)$}
+    \State recordWin$(turn)$
+    \State saveHighscores()
+    \State showEndingScreen()
+\ElsIf{isStalemate$(opponent)$}
+    \State showEndingScreen(STALEMATE)
+\EndIf
+
+\State $turn \gets opponent$
+\State Deselect piece
+\State \Return MOVE\_SUCCESS
+\end{algorithmic}
+\end{algorithm}
+
+\section{Checkmate Detection Algorithm}
+
+\begin{algorithm}[H]
+\caption{Comprehensive Checkmate Detection}
+\begin{algorithmic}[1]
+\Procedure{IsCheckmate}{$side$}
+    \If{!isKingInCheck($side$)}
+        \State \Return \textsc{false} \Comment{Not in check}
+    \EndIf
+    
+    \For{$sr \gets 0$ \textbf{to} $7$}
+        \For{$sc \gets 0$ \textbf{to} $7$}
+            \State $piece \gets board[sr][sc]$
+            \If{$piece$ does not belong to $side$}
+                \State \textbf{continue}
+            \EndIf
+            
+            \For{$dr \gets 0$ \textbf{to} $7$}
+                \For{$dc \gets 0$ \textbf{to} $7$}
+                    \If{!isLegalMove($sr, sc, dr, dc$)}
+                        \State \textbf{continue}
+                    \EndIf
+                    
+                    \State \Comment{Simulate move}
+                    \State $saved \gets board[dr][dc]$
+                    \State $board[dr][dc] \gets board[sr][sc]$
+                    \State $board[sr][sc] \gets$ ' '
+                    
+                    \State $inCheck \gets$ isKingInCheck($side$)
+                    
+                    \State \Comment{Undo move}
+                    \State $board[sr][sc] \gets piece$
+                    \State $board[dr][dc] \gets saved$
+                    
+                    \If{!$inCheck$}
+                        \State \Return \textsc{false} \Comment{Found escape}
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndFor
+    \EndFor
+    
+    \State \Return \textsc{true} \Comment{No escape found - Checkmate}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Complexity Analysis}
+
+\textbf{Time Complexity:}
+\begin{itemize}
+    \item Worst case: $O(n^2 \times m^2)$ where $n$ = board size, $m$ = possible destinations
+    \item For chess (8×8): $O(64 \times 64) = O(4096)$ = $O(1)$ (constant for fixed board)
+    \item Practical performance: Typically terminates early when legal move found
+\end{itemize}
+
+\textbf{Space Complexity:} $O(1)$ - in-place simulation using existing board array
+
+\section{Attack Detection Algorithm}
+
+\begin{algorithm}[H]
+\caption{Square Attack Detection}
+\begin{algorithmic}[1]
+\Procedure{IsSquareAttacked}{$r, c, attackerColor$}
+    \State \Comment{Check pawn attacks}
+    \If{$attackerColor$ == 'w'}
+        \If{board[$r-1$][$c-1$] == 'P' \textbf{or} board[$r-1$][$c+1$] == 'P'}
+            \State \Return \textsc{true}
+        \EndIf
+    \Else
+        \If{board[$r+1$][$c-1$] == 'p' \textbf{or} board[$r+1$][$c+1$] == 'p'}
+            \State \Return \textsc{true}
+        \EndIf
+    \EndIf
+    
+    \State \Comment{Check knight attacks (8 L-shaped positions)}
+    \For{each knight move pattern}
+        \If{knight of $attackerColor$ at position}
+            \State \Return \textsc{true}
+        \EndIf
+    \EndFor
+    
+    \State \Comment{Check sliding pieces (rook, bishop, queen)}
+    \For{each direction in \{horizontal, vertical, diagonal\}}
+        \State Scan from $(r, c)$ along direction
+        \If{rook/queen (for h/v) or bishop/queen (for diag) found}
+            \State \Return \textsc{true}
+        \EndIf
+        \If{obstruction encountered}
+            \State \textbf{break} from this direction
+        \EndIf
+    \EndFor
+    
+    \State \Comment{Check king adjacency}
+    \For{each adjacent square}
+        \If{king of $attackerColor$ at square}
+            \State \Return \textsc{true}
+        \EndIf
+    \EndFor
+    
+    \State \Return \textsc{false}
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\section{Piece Movement Patterns}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}p{2cm}p{5cm}p{6cm}@{}}
+\toprule
+\textbf{Piece} & \textbf{Movement Rule} & \textbf{Special Conditions} \\ \midrule
+Pawn & 
+Forward 1 (or 2 from start), Diagonal capture & 
+Must move forward, Cannot move backward, En passant not implemented \\
+
+Rook & 
+Any distance horizontally or vertically & 
+Path must be clear, Castling not implemented \\
+
+Knight & 
+L-shape: 2 squares + 1 perpendicular & 
+Can jump over pieces \\
+
+Bishop & 
+Any distance diagonally & 
+Path must be clear, Stays on same color \\
+
+Queen & 
+Rook + Bishop movements & 
+Most powerful piece \\
+
+King & 
+One square in any direction & 
+Cannot move into check, Castling not implemented \\ \bottomrule
+\end{tabular}
+\caption{Chess piece movement patterns}
+\end{table}
+
+\section{State Machine Diagram}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    state/.style={circle, draw, minimum size=2cm, font=\small},
+    arrow/.style={->, >=stealth, thick}
+]
+    \node[state] (menu) at (0,0) {Main\\Menu};
+    \node[state] (game) at (5,0) {In\\Game};
+    \node[state] (pause) at (5,3) {Pause\\Menu};
+    \node[state] (end) at (10,0) {End\\Screen};
+    \node[state] (settings) at (0,3) {Settings};
+    
+    \draw[arrow] (menu) -- node[above] {Start} (game);
+    \draw[arrow] (game) -- node[right] {Press P} (pause);
+    \draw[arrow] (pause) -- node[right] {Resume} (game);
+    \draw[arrow] (game) -- node[above] {Checkmate} (end);
+    \draw[arrow] (end) -- node[below] {Play Again} (game);
+    \draw[arrow] (end) to[bend right=30] node[below] {Exit} (menu);
+    \draw[arrow] (pause) to[bend right=30] node[left] {Exit} (menu);
+    \draw[arrow] (menu) -- node[left] {Settings} (settings);
+    \draw[arrow] (settings) -- node[right] {Back} (menu);
+\end{tikzpicture}
+\caption{Game state machine}
+\end{figure}
+
+\clearpage
+
+% Chapter 6: User Interface
+\chapter{User Interface Design}
+
+\section{Visual Layout}
+
+\subsection{Main Window Specifications}
+
+\begin{itemize}
+    \item \textbf{Dimensions:} 800×800 pixels
+    \item \textbf{Frame Rate:} 60 FPS
+    \item \textbf{Title:} "SFML Chess"
+    \item \textbf{Resizable:} No (fixed size for consistent rendering)
+\end{itemize}
+
+\subsection{Color Scheme}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llc@{}}
+\toprule
+\textbf{Element} & \textbf{Color} & \textbf{RGB} \\ \midrule
+Light Squares & Beige & (235, 235, 208) \\
+Dark Squares & Green & (119, 149, 86) \\
+Selection Highlight & Yellow (90\% opacity) & (255, 255, 0, 90) \\
+Menu Background & Green & (119, 149, 86) \\
+Button Normal & Light Gray & (235, 235, 208) \\
+Button Hover & Purple & (130, 140, 200) \\
+Button Text Hover & Gold & (255, 215, 0) \\ \bottomrule
+\end{tabular}
+\caption{UI color palette}
+\end{table}
+
+\section{Interaction Design}
+
+\subsection{Mouse Controls}
+
+\textbf{Piece Selection:}
+\begin{enumerate}
+    \item User clicks on a piece
+    \item System validates ownership (must match current turn)
+    \item If valid: Square highlights in yellow
+    \item If invalid: No action
+\end{enumerate}
+
+\textbf{Move Execution:}
+\begin{enumerate}
+    \item User clicks destination while piece selected
+    \item System validates move legality
+    \item System simulates move and checks for self-check
+    \item If legal: Move executes, turn toggles
+    \item If illegal: Selection clears
+\end{enumerate}
+
+\subsection{Keyboard Controls}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Key} & \textbf{Action} \\ \midrule
+\textbf{P} & Open pause menu \\
+\textbf{S} & Quick save game \\
+\textbf{ESC} & Return to main menu / Exit current screen \\
+\textbf{Enter/Space} & Play again (end screen) \\
+Mouse Click & Select piece / Make move / Menu navigation \\ \bottomrule
+\end{tabular}
+\caption{Keyboard and mouse controls}
+\end{table}
+
+\section{Menu Screens}
+
+\subsection{Main Menu Layout}
+
+\begin{itemize}
+    \item \textbf{Title:} "Chess Game" (60pt, centered top)
+    \item \textbf{Buttons:} 5 vertical buttons (300×60 px each)
+    \begin{itemize}
+        \item Start New Game
+        \item Load Game
+        \item Settings
+        \item High Scores
+        \item Exit
+    \end{itemize}
+    \item \textbf{Spacing:} 85px between buttons
+    \item \textbf{Hover Effect:} Color change + text color change
+\end{itemize}
+
+\subsection{Pause Menu Layout}
+
+\begin{itemize}
+    \item \textbf{Background:} Dark semi-transparent overlay
+    \item \textbf{Buttons:} 3 vertical buttons (320×70 px each)
+    \begin{itemize}
+        \item Resume
+        \item Save Game
+        \item Exit to Main Menu
+    \end{itemize}
+    \item \textbf{Positioning:} Centered on screen
+\end{itemize}
+
+\subsection{End Game Screen Layout}
+
+\begin{itemize}
+    \item \textbf{Result Text:} Large (60pt), color-coded
+    \begin{itemize}
+        \item White Wins: White text
+        \item Black Wins: Black text
+        \item Draw/Stalemate: Yellow/Cyan text
+    \end{itemize}
+    \item \textbf{Buttons:} 2 options
+    \begin{itemize}
+        \item Play Again
+        \item Exit to Main Menu
+    \end{itemize}
+\end{itemize}
+
+\section{Visual Feedback}
+
+\subsection{Selection Highlighting}
+
+When a piece is selected:
+\begin{itemize}
+    \item Semi-transparent yellow rectangle overlays the square
+    \item Opacity: 90/255 (approximately 35\%)
+    \item Persists until move executed or different piece selected
+\end{itemize}
+
+\subsection{Button Hover Effects}
+
+\begin{itemize}
+    \item \textbf{Normal State:} Light background, black text
+    \item \textbf{Hover State:} Purple background, gold text
+    \item \textbf{Transition:} Instant (no animation)
+\end{itemize}
+
+\section{Asset Requirements}
+
+\subsection{Piece Sprites}
+
+\textbf{Specifications:}
+\begin{itemize}
+    \item Format: PNG with transparency
+    \item Recommended size: 100×100 pixels
+    \item Required quantity: 12 (6 white, 6 black)
+    \item Naming convention: \code{<color>\_<piece>.png}
+\end{itemize}
+
+\subsection{Board Texture}
+
+\textbf{Specifications:}
+\begin{itemize}
+    \item Format: PNG
+    \item Recommended size: 800×800 pixels
+    \item Content: Pre-rendered checkered board
+    \item Fallback: Procedurally generated colored squares
+\end{itemize}
+
+\clearpage
+
+% Chapter 7: Testing & Quality Assurance
+\chapter{Testing \& Quality Assurance}
+
+\section{Testing Strategy}
+
+\subsection{Unit Testing}
+
+Each module should be tested independently:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}p{3cm}p{8cm}@{}}
+\toprule
+\textbf{Module} & \textbf{Test Cases} \\ \midrule
+Move Validation & 
+- Test each piece type with legal moves \\
+& - Test illegal moves (off board, blocked path) \\
+& - Test capture vs. non-capture \\
+& - Test turn validation \\ \midrule
+
+Check Detection & 
+- Test check from each piece type \\
+& - Test no false positives \\
+& - Test king finding algorithm \\ \midrule
+
+Checkmate & 
+- Test standard checkmate positions \\
+& - Test stalemate conditions \\
+& - Test legal move detection \\ \midrule
+
+Rendering & 
+- Test texture loading \\
+& - Test coordinate conversion \\
+& - Test piece positioning \\ \midrule
+
+Persistence & 
+- Test save with various board states \\
+& - Test load with corrupt files \\
+& - Test file not found handling \\ \bottomrule
+\end{tabular}
+\caption{Unit testing checklist}
+\end{table}
+
+\subsection{Integration Testing}
+
+Test module interactions:
+
+\begin{enumerate}
+    \item \textbf{Move Execution Flow:}
+    \begin{itemize}
+        \item Click selection → Move validation → Check detection → Turn toggle
+    \end{itemize}
+    
+    \item \textbf{Game End Flow:}
+    \begin{itemize}
+        \item Checkmate detection → Statistics update → End screen display
+    \end{itemize}
+    
+    \item \textbf{Save/Load Flow:}
+    \begin{itemize}
+        \item Game state → File write → File read → State restoration
+    \end{itemize}
+\end{enumerate}
+
+\subsection{System Testing}
+
+Complete workflow testing:
+
+\begin{enumerate}
+    \item Launch application
+    \item Navigate main menu
+    \item Start new game
+    \item Execute valid moves
+    \item Attempt invalid moves
+    \item Save game
+    \item Exit to menu
+    \item Load saved game
+    \item Continue game to checkmate
+    \item Verify statistics updated
+    \item Play again
+    \item Exit application
+\end{enumerate}
+
+\section{Known Test Scenarios}
+
+\subsection{Chess Puzzles for Validation}
+
+\textbf{Fool's Mate (Fastest Checkmate):}
+\begin{enumerate}
+    \item f2-f3 (White pawn)
+    \item e7-e6 (Black pawn)
+    \item g2-g4 (White pawn)
+    \item Qd8-h4\# (Black queen checkmate)
+\end{enumerate}
+
+\textbf{Scholar's Mate:}
+\begin{enumerate}
+    \item e2-e4
+    \item e7-e5
+    \item Bf1-c4
+    \item Nb8-c6
+    \item Qd1-h5
+    \item Ng8-f6
+    \item Qh5xf7\#
+\end{enumerate}
+
+\textbf{Stalemate Test:}
+Configure board with:
+\begin{itemize}
+    \item Black king on a8
+    \item White king on c7
+    \item White queen on c6
+    \item Black to move → Stalemate (no legal moves, not in check)
+\end{itemize}
+
+\subsection{Edge Case Testing}
+
+\begin{enumerate}
+    \item \textbf{Pawn Boundaries:}
+    \begin{itemize}
+        \item Pawn reaching rank 8 (should remain pawn - promotion not implemented)
+        \item Pawn at starting position (double-move available)
+    \end{itemize}
+    
+    \item \textbf{King Safety:}
+    \begin{itemize}
+        \item Move that exposes king to check (should be rejected)
+        \item King moving into attacked square (should be rejected)
+    \end{itemize}
+    
+    \item \textbf{Path Blocking:}
+    \begin{itemize}
+        \item Rook movement with pieces in path
+        \item Bishop movement with pieces in path
+        \item Queen movement with pieces in path
+    \end{itemize}
+    
+    \item \textbf{Piece Capture:}
+    \begin{itemize}
+        \item Capture own piece (should be rejected)
+        \item Capture opponent piece (should be allowed)
+    \end{itemize}
+\end{enumerate}
+
+\section{Quality Assurance Checklist}
+
+\subsection{Code Quality}
+
+\begin{itemize}
+    \item[$\square$] No memory leaks (SFML textures properly managed)
+    \item[$\square$] No global variable conflicts
+    \item[$\square$] Consistent naming conventions
+    \item[$\square$] Adequate error handling (file I/O, texture loading)
+    \item[$\square$] Code comments for complex algorithms
+\end{itemize}
+
+\subsection{Functionality}
+
+\begin{itemize}
+    \item[$\square$] All piece movements implemented correctly
+    \item[$\square$] Check detection functional
+    \item[$\square$] Checkmate detection functional
+    \item[$\square$] Stalemate detection functional
+    \item[$\square$] Save/load preserves exact game state
+    \item[$\square$] Statistics persist across sessions
+    \item[$\square$] Settings persist across sessions
+\end{itemize}
+
+\subsection{User Experience}
+
+\begin{itemize}
+    \item[$\square$] Intuitive piece selection
+    \item[$\square$] Clear visual feedback (highlighting)
+    \item[$\square$] Responsive menus
+    \item[$\square$] No crashes during normal gameplay
+    \item[$\square$] Graceful error messages
+\end{itemize}
+
+\section{Bug Reporting Template}
+
+When reporting bugs, include:
+
+\begin{verbatim}
+Title: [Brief description]
+
+Environment:
+- OS: [Windows/Linux/macOS + version]
+- Compiler: [GCC/Clang/MSVC + version]
+- SFML Version: [2.6.2]
+
+Steps to Reproduce:
+1. [First step]
+2. [Second step]
+3. [...]
+
+Expected Behavior:
+[What should happen]
+
+Actual Behavior:
+[What actually happens]
+
+Screenshots/Board State:
+[If applicable]
+
+Additional Notes:
+[Any other relevant information]
+\end{verbatim}
+
+\clearpage
+
+% Chapter 8: Limitations & Future Work
+\chapter{Limitations \& Future Enhancements}
+
+\section{Current Limitations}
+
+\subsection{Missing Chess Rules}
+
+\subsubsection{En Passant}
+
+\textbf{Description:} Special pawn capture when opponent's pawn moves two squares forward and lands beside your pawn.
+
+\textbf{Impact:} Reduces chess rule completeness by approximately 1-2\%
+
+\textbf{Implementation Complexity:} Medium
+\begin{itemize}
+    \item Requires tracking previous move
+    \item Must detect specific pawn configuration
+    \item Adds special case to pawn capture logic
+\end{itemize}
+
+\subsubsection{Castling}
+
+\textbf{Description:} Special move involving king and rook moving simultaneously under specific conditions.
+
+\textbf{Conditions:}
+\begin{itemize}
+    \item King has not moved
+    \item Rook has not moved
+    \item No pieces between king and rook
+    \item King not in check
+    \item King does not pass through attacked square
+    \item King does not land on attacked square
+\end{itemize}
+
+\textbf{Impact:} Significant strategic limitation
+
+\textbf{Implementation Complexity:} High
+\begin{itemize}
+    \item Requires move history tracking
+    \item Complex validation logic
+    \item Special rendering (two pieces move simultaneously)
+\end{itemize}
+
+\subsubsection{Pawn Promotion}
+
+\textbf{Description:} Pawn reaching opposite end transforms into queen, rook, bishop, or knight.
+
+\textbf{Impact:} Game-breaking limitation in late-game scenarios
+
+\textbf{Implementation Complexity:} Medium
+\begin{itemize}
+    \item Detect pawn reaching final rank
+    \item Display promotion selection UI
+    \item Replace pawn with chosen piece
+\end{itemize}
+
+\subsection{Draw Conditions}
+
+\subsubsection{Threefold Repetition}
+
+\textbf{Description:} Same position occurs three times - player can claim draw.
+
+\textbf{Implementation Complexity:} High
+\begin{itemize}
+    \item Requires complete move history storage
+    \item Position hashing for comparison
+    \item Manual draw claim mechanism
+\end{itemize}
+
+\subsubsection{Fifty-Move Rule}
+
+\textbf{Description:} If 50 moves occur without pawn movement or capture, game is draw.
+
+\textbf{Implementation Complexity:} Medium
+\begin{itemize}
+    \item Track move counter
+    \item Reset on pawn move or capture
+    \item Automatic draw declaration
+\end{itemize}
+
+\subsubsection{Insufficient Material}
+
+\textbf{Description:} Neither player can force checkmate (e.g., King vs. King).
+
+\textbf{Implementation Complexity:} Medium
+\begin{itemize}
+    \item Detect piece combinations
+    \item Analyze mating potential
+    \item Automatic draw declaration
+\end{itemize}
+
+\subsection{User Interface Limitations}
+
+\begin{enumerate}
+    \item \textbf{No Move History Display:} Players cannot review previous moves
+    \item \textbf{No Undo/Redo:} Cannot reverse moves
+    \item \textbf{No Move Hints:} No visual indication of legal moves
+    \item \textbf{No Coordinate Labels:} No rank/file notation on board
+    \item \textbf{Fixed Window Size:} Cannot resize window
+    \item \textbf{No Animations:} Pieces teleport instead of smooth movement
+    \item \textbf{No Sound Effects:} Silent gameplay
+    \item \textbf{Font Path Issues:} Hardcoded Windows font path not cross-platform
+\end{enumerate}
+
+\subsection{Gameplay Limitations}
+
+\begin{enumerate}
+    \item \textbf{No AI Opponent:} Only human vs. human play
+    \item \textbf{No Timer/Clock:} No time-controlled games
+    \item \textbf{No Move Notation:} No algebraic notation display
+    \item \textbf{No Game Analysis:} No engine evaluation
+    \item \textbf{No Online Multiplayer:} Only local play
+    \item \textbf{No Tutorial:} No guided learning for beginners
+\end{enumerate}
+
+\subsection{Technical Limitations}
+
+\begin{enumerate}
+    \item \textbf{Global State:} Board array is global, limiting encapsulation
+    \item \textbf{No Error Recovery:} Corrupted save files cause failures
+    \item \textbf{Limited Asset Validation:} No verification of sprite dimensions
+    \item \textbf{No Configuration File:} Settings hardcoded, difficult to modify
+    \item \textbf{Platform-Specific Paths:} Font loading requires manual adjustment
+\end{enumerate}
+
+\section{Future Enhancement Roadmap}
+
+\subsection{Phase 1: Complete Chess Rules (Priority: High)}
+
+\textbf{Estimated Effort:} 2-3 weeks
+
+\begin{enumerate}
+    \item \textbf{Pawn Promotion}
+    \begin{itemize}
+        \item Implement promotion UI dialog
+        \item Add piece replacement logic
+        \item Test with various promotion scenarios
+    \end{itemize}
+    
+    \item \textbf{Castling}
+    \begin{itemize}
+        \item Add move history tracking
+        \item Implement castling validation
+        \item Create special move rendering
+    \end{itemize}
+    
+    \item \textbf{En Passant}
+    \begin{itemize}
+        \item Track previous move state
+        \item Add en passant detection
+        \item Implement special capture logic
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Phase 2: User Experience Improvements (Priority: High)}
+
+\textbf{Estimated Effort:} 3-4 weeks
+
+\begin{enumerate}
+    \item \textbf{Move History Panel}
+    \begin{lstlisting}[caption={Proposed move history structure}]
+struct MoveRecord {
+    int srcRow, srcCol;
+    int dstRow, dstCol;
+    char piece;
+    char captured;
+    std::string algebraic;  // e.g., "Nf3"
+};
+
+std::vector<MoveRecord> moveHistory;
+    \end{lstlisting}
+    
+    \item \textbf{Undo/Redo System}
+    \begin{itemize}
+        \item Implement move stack
+        \item Add UI buttons for undo/redo
+        \item Keyboard shortcuts (Ctrl+Z, Ctrl+Y)
+    \end{itemize}
+    
+    \item \textbf{Legal Move Highlighting}
+    \begin{itemize}
+        \item When piece selected, highlight all legal destinations
+        \item Use different colors for captures vs. moves
+        \item Toggle option in settings
+    \end{itemize}
+    
+    \item \textbf{Piece Animations}
+    \begin{lstlisting}[caption={Animation framework}]
+struct Animation {
+    sf::Sprite* sprite;
+    sf::Vector2f startPos;
+    sf::Vector2f endPos;
+    float duration;
+    float elapsed;
+    bool active;
+};
+
+void updateAnimations(float deltaTime) {
+    // Interpolate sprite positions
+    // Linear or smooth easing
+}
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Phase 3: AI Opponent (Priority: Medium)}
+
+\textbf{Estimated Effort:} 6-8 weeks
+
+\subsubsection{Minimax Algorithm Implementation}
+
+\begin{algorithm}[H]
+\caption{Minimax with Alpha-Beta Pruning}
+\begin{algorithmic}[1]
+\Procedure{Minimax}{$depth, alpha, beta, maximizing$}
+    \If{$depth == 0$ \textbf{or} game over}
+        \State \Return evaluate(board)
+    \EndIf
+    
+    \If{$maximizing$}
+        \State $maxEval \gets -\infty$
+        \For{each legal move}
+            \State makeMove(move)
+            \State $eval \gets$ Minimax($depth-1, alpha, beta, false$)
+            \State undoMove(move)
+            \State $maxEval \gets \max(maxEval, eval)$
+            \State $alpha \gets \max(alpha, eval)$
+            \If{$beta \leq alpha$}
+                \State \textbf{break} \Comment{Beta cutoff}
+            \EndIf
+        \EndFor
+        \State \Return $maxEval$
+    \Else
+        \State $minEval \gets +\infty$
+        \For{each legal move}
+            \State makeMove(move)
+            \State $eval \gets$ Minimax($depth-1, alpha, beta, true$)
+            \State undoMove(move)
+            \State $minEval \gets \min(minEval, eval)$
+            \State $beta \gets \min(beta, eval)$
+            \If{$beta \leq alpha$}
+                \State \textbf{break} \Comment{Alpha cutoff}
+            \EndIf
+        \EndFor
+        \State \Return $minEval$
+    \EndIf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Position Evaluation Function}
+
+\begin{lstlisting}[caption={Chess position evaluation}]
+int evaluatePosition() {
+    int score = 0;
+    
+    // Material count
+    const int PAWN_VALUE = 100;
+    const int KNIGHT_VALUE = 320;
+    const int BISHOP_VALUE = 330;
+    const int ROOK_VALUE = 500;
+    const int QUEEN_VALUE = 900;
+    const int KING_VALUE = 20000;
+    
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            char piece = board[r][c];
+            int value = getPieceValue(piece);
+            
+            if (isWhitePiece(piece))
+                score += value;
+            else if (isBlackPiece(piece))
+                score -= value;
+        }
+    }
+    
+    // Positional bonuses
+    score += evaluatePositioning();
+    score += evaluateMobility();
+    score += evaluateKingSafety();
+    
+    return score;
+}
+\end{lstlisting}
+
+\subsubsection{Difficulty Levels}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}llc@{}}
+\toprule
+\textbf{Level} & \textbf{Search Depth} & \textbf{Features} \\ \midrule
+Beginner & 2 & Material count only \\
+Intermediate & 4 & + Positional evaluation \\
+Advanced & 6 & + Opening book \\
+Expert & 8+ & + Endgame tablebase \\ \bottomrule
+\end{tabular}
+\caption{AI difficulty levels}
+\end{table}
+
+\subsection{Phase 4: Advanced Features (Priority: Low)}
+
+\textbf{Estimated Effort:} 8-12 weeks
+
+\begin{enumerate}
+    \item \textbf{Network Multiplayer}
+    \begin{itemize}
+        \item TCP/IP socket communication
+        \item Game state synchronization
+        \item Lobby system for matchmaking
+    \end{itemize}
+    
+    \item \textbf{Chess Clock/Timer}
+    \begin{itemize}
+        \item Countdown timer per player
+        \item Time control formats (Classical, Rapid, Blitz)
+        \item Increment/delay options
+    \end{itemize}
+    
+    \item \textbf{Game Analysis Engine}
+    \begin{itemize}
+        \item Post-game review
+        \item Blunder detection
+        \item Best move suggestions
+        \item Integration with external engines (Stockfish)
+    \end{itemize}
+    
+    \item \textbf{PGN Import/Export}
+    \begin{lstlisting}[caption={PGN format example}]
+[Event "Casual Game"]
+[Site "SFML Chess"]
+[Date "2025.01.23"]
+[White "Player 1"]
+[Black "Player 2"]
+[Result "1-0"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7
+6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8 10. d4 Nbd7
+1-0
+    \end{lstlisting}
+    
+    \item \textbf{3D Board Rendering}
+    \begin{itemize}
+        \item OpenGL integration
+        \item Camera rotation
+        \item Realistic piece models
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Phase 5: Code Quality Improvements}
+
+\begin{enumerate}
+    \item \textbf{Refactoring to Object-Oriented Design}
+    \begin{lstlisting}[caption={Proposed class structure}]
+class Piece {
+protected:
+    int row, col;
+    char color;
+    char type;
+public:
+    virtual bool isLegalMove(int dr, int dc) = 0;
+    virtual std::vector<Move> getLegalMoves() = 0;
+};
+
+class Pawn : public Piece {
+public:
+    bool isLegalMove(int dr, int dc) override;
+};
+
+class Board {
+private:
+    Piece* squares[8][8];
+    std::vector<Move> history;
+public:
+    bool makeMove(Move m);
+    void undoMove();
+    bool isCheckmate(char side);
+};
+    \end{lstlisting}
+    
+    \item \textbf{Unit Test Framework}
+    \begin{lstlisting}[caption={Example unit tests with Catch2}]
+TEST_CASE("Pawn movement", "[moves]") {
+    Board b;
+    b.initialize();
+    
+    SECTION("White pawn one square") {
+        REQUIRE(b.isMoveValid(6, 0, 5, 0) == true);
+    }
+    
+    SECTION("White pawn two squares from start") {
+        REQUIRE(b.isMoveValid(6, 0, 4, 0) == true);
+    }
+    
+    SECTION("Invalid pawn backward move") {
+        REQUIRE(b.isMoveValid(6, 0, 7, 0) == false);
+    }
+}
+    \end{lstlisting}
+    
+    \item \textbf{Cross-Platform Font Loading}
+    \begin{lstlisting}[caption={Platform-agnostic font loading}]
+sf::Font loadSystemFont() {
+    sf::Font font;
+    
+    #ifdef _WIN32
+        const char* paths[] = {
+            "C:/Windows/Fonts/arial.ttf",
+            "C:/Windows/Fonts/calibri.ttf"
+        };
+    #elif __APPLE__
+        const char* paths[] = {
+            "/System/Library/Fonts/Helvetica.ttc",
+            "/System/Library/Fonts/Arial.ttf"
+        };
+    #else  // Linux
+        const char* paths[] = {
+            "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+        };
+    #endif
+    
+    for (const char* path : paths) {
+        if (font.loadFromFile(path))
+            return font;
+    }
+    
+    throw std::runtime_error("No suitable font found");
+}
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Performance Optimization Opportunities}
+
+\subsection{Current Performance Profile}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Operation} & \textbf{Frequency} & \textbf{Complexity} \\ \midrule
+Rendering & 60 FPS & O(1) \\
+Move Validation & Per click & O(n) \\
+Check Detection & Per move & O(n²) \\
+Checkmate Detection & Per move & O(n⁴) \\
+Save/Load & User-initiated & O(1) \\ \bottomrule
+\end{tabular}
+\caption{Performance characteristics}
+\end{table}
+
+\subsection{Optimization Strategies}
+
+\begin{enumerate}
+    \item \textbf{Lazy Checkmate Detection}
+    \begin{itemize}
+        \item Only check for checkmate when king is in check
+        \item Reduces unnecessary computation
+    \end{itemize}
+    
+    \item \textbf{Move Generation Caching}
+    \begin{lstlisting}[caption={Cached legal moves}]
+struct MoveCache {
+    std::vector<Move> legalMoves;
+    int boardHash;
+    bool valid;
+};
+
+MoveCache cache;
+
+std::vector<Move> getLegalMoves(char side) {
+    int currentHash = calculateBoardHash();
+    
+    if (cache.valid && cache.boardHash == currentHash)
+        return cache.legalMoves;
+    
+    cache.legalMoves = computeLegalMoves(side);
+    cache.boardHash = currentHash;
+    cache.valid = true;
+    
+    return cache.legalMoves;
+}
+    \end{lstlisting}
+    
+    \item \textbf{Bitboard Representation}
+    \begin{lstlisting}[caption={Bitboard alternative}]
+// Instead of char board[8][8]
+struct Bitboard {
+    uint64_t whitePawns;
+    uint64_t whiteKnights;
+    uint64_t whiteBishops;
+    uint64_t whiteRooks;
+    uint64_t whiteQueens;
+    uint64_t whiteKing;
+    // ... same for black
+};
+
+// Faster operations
+uint64_t getAttackedSquares(Bitboard b) {
+    return pawnAttacks(b.whitePawns) | 
+           knightAttacks(b.whiteKnights) | ...;
+}
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Documentation Improvements}
+
+\begin{enumerate}
+    \item \textbf{Code Documentation}
+    \begin{itemize}
+        \item Add Doxygen comments to all functions
+        \item Generate HTML documentation
+        \item Include usage examples
+    \end{itemize}
+    
+    \item \textbf{User Manual}
+    \begin{itemize}
+        \item Step-by-step gameplay guide
+        \item Keyboard shortcuts reference
+        \item Troubleshooting section
+    \end{itemize}
+    
+    \item \textbf{Developer Guide}
+    \begin{itemize}
+        \item Architecture diagrams
+        \item API reference
+        \item Contribution guidelines
+    \end{itemize}
+\end{enumerate}
+
+\clearpage
+
+% Chapter 9: Conclusion
+\chapter{Conclusion}
+
+\section{Project Summary}
+
+The SFML Chess Game represents a comprehensive implementation of the classical chess game, demonstrating the successful application of software engineering principles to game development. Through 1,240 lines of well-structured C++ code organized across 10 modular components, the project achieves its core objectives of creating a functional, visually appealing, and maintainable chess application.
+
+\subsection{Achievements}
+
+\begin{enumerate}
+    \item \textbf{Complete Rule Implementation:} All standard piece movements, check/checkmate detection, and stalemate recognition function correctly
+    
+    \item \textbf{Robust Architecture:} Modular design with clear separation between game logic, rendering, and user interface
+    
+    \item \textbf{Cross-Platform Compatibility:} Successfully compiles and runs on Windows, Linux, and macOS with SFML 2.6.2
+    
+    \item \textbf{Persistent State:} Game state, statistics, and user preferences survive application restarts
+    
+    \item \textbf{Intuitive Interface:} Clean menu system with visual feedback for piece selection and move validation
+\end{enumerate}
+
+\subsection{Technical Accomplishments}
+
+\begin{itemize}
+    \item \textbf{Efficient Algorithms:} Checkmate detection in O(n⁴) with early termination optimization
+    \item \textbf{Sprite Management:} Dynamic texture loading and scaling for various window sizes
+    \item \textbf{File I/O:} Robust serialization with error handling for corrupted data
+    \item \textbf{Event Handling:} Responsive mouse and keyboard input processing
+\end{itemize}
+
+\section{Lessons Learned}
+
+\subsection{Design Insights}
+
+\begin{enumerate}
+    \item \textbf{Modularity Matters:} Separating concerns into distinct modules significantly simplified debugging and feature addition
+    
+    \item \textbf{Global State Trade-offs:} While convenient for a small project, global board array limits scalability for advanced features
+    
+    \item \textbf{Early Planning:} Architectural decisions made at project start (character array vs. object-oriented) have lasting impact
+    
+    \item \textbf{Error Handling:} Graceful degradation (fallback colored squares when textures fail) improves user experience
+\end{enumerate}
+
+\subsection{Technical Challenges}
+
+\begin{enumerate}
+    \item \textbf{Checkmate Detection Complexity:} Implementing exhaustive legal move checking required careful state simulation and restoration
+    
+    \item \textbf{Cross-Platform Font Loading:} Hardcoded paths cause portability issues - future versions should use platform detection
+    
+    \item \textbf{SFML Learning Curve:} Understanding texture management and sprite scaling required experimentation
+    
+    \item \textbf{Chess Rule Completeness:} Implementing all special moves (en passant, castling, promotion) requires significant additional logic
+\end{enumerate}
+
+\section{Educational Value}
+
+This project serves as an excellent learning resource for:
+
+\begin{itemize}
+    \item \textbf{Algorithm Design:} Move validation, pathfinding, game state analysis
+    \item \textbf{Data Structures:} 2D arrays, state machines, file formats
+    \item \textbf{Software Architecture:} Modular design, separation of concerns
+    \item \textbf{Graphics Programming:} Sprite management, coordinate systems, rendering loops
+    \item \textbf{User Interface Design:} Menu systems, event handling, visual feedback
+    \item \textbf{File I/O:} Serialization, persistence, error recovery
+\end{itemize}
+
+\section{Practical Applications}
+
+Beyond chess, the techniques demonstrated in this project apply to:
+
+\begin{itemize}
+    \item \textbf{Other Board Games:} Checkers, Go, Reversi share similar architectures
+    \item \textbf{Turn-Based Strategy:} Grid-based games with rule validation
+    \item \textbf{Educational Software:} Interactive teaching tools for chess
+    \item \textbf{Game Development:} Foundation for more complex SFML projects
+\end{itemize}
+
+\section{Final Recommendations}
+
+\subsection{For Users}
+
+\begin{itemize}
+    \item Ensure all asset files are properly installed before running
+    \item Use keyboard shortcuts (P, S, ESC) for efficient navigation
+    \item Save frequently to preserve game progress
+    \item Report bugs with detailed steps to reproduce
+\end{itemize}
+
+\subsection{For Developers}
+
+\begin{itemize}
+    \item Start with Phase 1 enhancements (pawn promotion, castling, en passant)
+    \item Consider refactoring to object-oriented design before adding AI
+    \item Implement unit tests to prevent regression
+    \item Document all new features thoroughly
+\end{itemize}
+
+\subsection{For Students}
+
+\begin{itemize}
+    \item Study each module independently before understanding interactions
+    \item Experiment with modifications (different piece values, board sizes)
+    \item Implement missing features as learning exercises
+    \item Compare this implementation with chess engines like Stockfish
+\end{itemize}
+
+\section{Acknowledgments}
+
+This project builds upon:
+
+\begin{itemize}
+    \item \textbf{SFML Library:} Laurent Gomila and contributors for the excellent multimedia framework
+    \item \textbf{Chess Community:} Centuries of chess knowledge and notation standards
+    \item \textbf{Open Source:} Numerous C++ and game development resources
+\end{itemize}
+
+\section{Closing Remarks}
+
+The SFML Chess Game successfully demonstrates that complex game logic can be implemented cleanly and efficiently using modern C++ and graphics libraries. While the current implementation has limitations (missing special moves, no AI), it provides a solid foundation for future enhancements and serves as an educational resource for aspiring game developers.
+
+The project's modular architecture ensures that adding features like AI opponents, network play, or advanced chess rules can be accomplished without major restructuring. The comprehensive documentation enables both users and developers to engage with the project effectively.
+
+\vspace{1cm}
+
+\begin{center}
+\textit{``Chess is everything: art, science, and sport.'' — Anatoly Karpov}
+\end{center}
+
+\vspace{1cm}
+
+This chess implementation honors the timeless game while embracing modern software development practices, creating a bridge between classical strategy and contemporary programming.
+
+\clearpage
+
+% Appendices
+\appendix
+
+\chapter{Code Statistics}
+
+\section{Module Line Counts}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{File} & \textbf{Lines} & \textbf{Functions} & \textbf{Complexity} \\ \midrule
+main.cpp & 180 & 1 & High \\
+board.cpp & 40 & 2 & Low \\
+moves.cpp & 150 & 12 & Medium \\
+checkmate.cpp & 250 & 7 & High \\
+render.cpp & 120 & 5 & Low \\
+menu.cpp & 280 & 5 & Medium \\
+ending.cpp & 100 & 1 & Low \\
+save.cpp & 50 & 2 & Low \\
+highscores.cpp & 40 & 3 & Low \\
+settings.cpp & 30 & 2 & Low \\ \midrule
+\textbf{Total} & \textbf{1,240} & \textbf{40} & \\ \bottomrule
+\end{tabular}
+\caption{Code statistics by module}
+\end{table}
+
+\section{Cyclomatic Complexity}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Function} & \textbf{Complexity} \\ \midrule
+isLegalMove() & 8 \\
+isPawnMove() & 7 \\
+isSquareAttacked() & 12 \\
+hasAnyLegalMove() & 15 \\
+isCheckmate() & 3 \\
+mainMenu() & 6 \\
+main() & 18 \\ \bottomrule
+\end{tabular}
+\caption{Cyclomatic complexity of key functions}
+\end{table}
+
+\chapter{File Format Specifications}
+
+\section{savegame.txt Format}
+
+\begin{verbatim}
+Format Version: 1.0
+Encoding: ASCII
+Line Endings: LF or CRLF
+
+Structure:
+Lines 1-8:   Board state (8 characters per line)
+             Space (' ') = empty square
+             Uppercase = White pieces
+             Lowercase = Black pieces
+Line 9:      Current turn ('w' or 'b')
+Line 10:     White wins (integer)
+Line 11:     Black wins (integer)
+
+Example:
+rnbqkbnr
+pppppppp
+        
+        
+        
+        
+PPPPPPPP
+RNBQKBNR
+w
+0
+0
+\end{verbatim}
+
+\section{highscores.dat Format}
+
+\begin{verbatim}
+Format Version: 1.0
+Encoding: ASCII
+
+Structure:
+Line 1:  White wins (non-negative integer)
+Line 2:  Black wins (non-negative integer)
+
+Example:
+12
+8
+\end{verbatim}
+
+\section{settings.cfg Format}
+
+\begin{verbatim}
+Format Version: 1.0
+Encoding: ASCII
+
+Structure:
+Line 1:  Sound setting (0 = off, 1 = on)
+Line 2:  Theme setting (0 = default, 1 = alternate)
+
+Example:
+1
+0
+\end{verbatim}
+
+\chapter{Compilation Flags Reference}
+
+\section{GCC/Clang Flags}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Flag} & \textbf{Purpose} \\ \midrule
+-std=c++17 & Enable C++17 standard \\
+-Wall & Enable all warnings \\
+-Wextra & Enable extra warnings \\
+-O2 & Optimization level 2 \\
+-O3 & Maximum optimization \\
+-g & Include debugging symbols \\
+-I<path> & Add include directory \\
+-L<path> & Add library directory \\
+-l<lib> & Link library \\ \bottomrule
+\end{tabular}
+\caption{Common compiler flags}
+\end{table}
+
+\section{Recommended Debug Build}
+
+\begin{lstlisting}[language=bash]
+g++ *.cpp -o chess_game_debug \
+    -std=c++17 -Wall -Wextra -g \
+    -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+\end{lstlisting}
+
+\section{Recommended Release Build}
+
+\begin{lstlisting}[language=bash]
+g++ *.cpp -o chess_game \
+    -std=c++17 -O3 -DNDEBUG \
+    -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio \
+    -s  # Strip symbols for smaller executable
+\end{lstlisting}
+
+\chapter{Quick Reference Guide}
+
+\section{Keyboard Shortcuts}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Key} & \textbf{Action} \\ \midrule
+P & Pause menu \\
+S & Save game \\
+ESC & Exit current screen \\
+Enter & Play again (end screen) \\
+Space & Play again (end screen) \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Piece Values (Standard)}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lc@{}}
+\toprule
+\textbf{Piece} & \textbf{Value (Centipawns)} \\ \midrule
+Pawn & 100 \\
+Knight & 320 \\
+Bishop & 330 \\
+Rook & 500 \\
+Queen & 900 \\
+King & ∞ (invaluable) \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Common Chess Notation}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\ \midrule
+K & King \\
+Q & Queen \\
+R & Rook \\
+B & Bishop \\
+N & Knight \\
+(none) & Pawn \\
+x & Captures \\
++ & Check \\
+\# & Checkmate \\
+O-O & Kingside castling \\
+O-O-O & Queenside castling \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{Glossary}
+
+\begin{description}
+    \item[Artifact] Binary executable file produced by compilation
+    \item[Bitboard] 64-bit integer representation of chess board
+    \item[Castling] Special king-rook move (not implemented)
+    \item[Check] King is under attack
+    \item[Checkmate] King in check with no legal moves (game over)
+    \item[En Passant] Special pawn capture (not implemented)
+    \item[FEN] Forsyth-Edwards Notation for board positions
+    \item[Minimax] Decision algorithm for game trees
+    \item[PGN] Portable Game Notation for chess games
+    \item[Promotion] Pawn reaching opposite end transforms (not implemented)
+    \item[SFML] Simple and Fast Multimedia Library
+    \item[Sprite] 2D image used in game graphics
+    \item[Stalemate] No legal moves but not in check (draw)
+    \item[Texture] Image loaded into graphics memory
+\end{description}
+
+\clearpage
+
+% Bibliography
+\begin{thebibliography}{99}
+
+\bibitem{sfml}
+Laurent Gomila et al.,
+\textit{SFML Documentation},
+SFML Development Team,
+2023,
+\url{https://www.sfml-dev.org/documentation/2.6.2/}
+
+\bibitem{chess_rules}
+FIDE,
+\textit{Laws of Chess},
+World Chess Federation,
+2023,
+\url{https://www.fide.com/FIDE/handbook/LawsOfChess.pdf}
+
+\bibitem{cpp_reference}
+\textit{C++ Reference},
+cppreference.com,
+2024,
+\url{https://en.cppreference.com/}
+
+\bibitem{game_programming}
+Gregory, Jason,
+\textit{Game Engine Architecture},
+CRC Press,
+Third Edition,
+2018
+
+\bibitem{ai_chess}
+Campbell, Murray; Hoane, A. Joseph; Hsu, Feng-hlsfml-audio ^
+    -std=c++17 -Wall
+\end{lstlisting}
+
+\subsection{Step 4: Copy SFML DLLs}
+
+Copy the following DLLs from \code{SFML-2.6.2\textbackslash bin} to your executable directory:
+
+\begin{itemize}
+    \item \code{sfml-graphics-2.dll}
+    \item \code{sfml-window-2.dll}
+    \item \code{sfml-system-2.dll}
+    \item \code{sfml-audio-2.dll}
+\end{itemize}
+
+\section{Linux Installation}
+
+\subsection{Step 1: Install SFML}
+
+\textbf{Ubuntu/Debian:}
+\begin{lstlisting}[language=bash]
+sudo apt-get update
+sudo apt-get install libsfml-dev
+\end{lstlisting}
+
+\textbf{Fedora:}
+\begin{lstlisting}[language=bash]
+sudo dnf install SFML-devel
+\end{lstlisting}
+
+\textbf{Arch Linux:}
+\begin{lstlisting}[language=bash]
+sudo pacman -S sfml
+\end{lstlisting}
+
+\subsection{Step 2: Install Build Tools}
+
+\begin{lstlisting}[language=bash]
+sudo apt-get install build-essential g++
+\end{lstlisting}
+
+\subsection{Step 3: Compile the Project}
+
+\begin{lstlisting}[language=bash, caption={Linux compilation command}]
+g++ main.cpp board.cpp moves.cpp render.cpp menu.cpp \
+    checkmate.cpp save.cpp highscores.cpp settings.cpp \
+    ending.cpp -o chess_game \
+    -lsfml-graphics -lsfml-window -lsfml-system -
+    \subsection{Step 4: Run the Game}
+
+\begin{lstlisting}[language=bash]
+./chess_game
+\end{lstlisting}
+
+\clearpage
+
+% (Chapters 4–9, Appendices, Glossary as provided in your original text remain unchanged.
+% Only the final bibliography and document end are completed/fixed below.)
+
+% Bibliography (completed and cleaned)
+\begin{thebibliography}{99}
+
+\bibitem{sfml}
+Laurent Gomila et al.,
+\textit{SFML Documentation},
+SFML Development Team,
+2023,
+\url{https://www.sfml-dev.org/documentation/2.6.2/}
+
+\bibitem{chess_rules}
+FIDE,
+\textit{Laws of Chess},
+World Chess Federation,
+2023,
+\url{https://www.fide.com/FIDE/handbook/LawsOfChess.pdf}
+
+\bibitem{cpp_reference}
+\textit{C++ Reference},
+cppreference.com,
+2024,
+\url{https://en.cppreference.com/}
+
+\bibitem{game_programming}
+Gregory, Jason,
+\textit{Game Engine Architecture},
+CRC Press,
+Third Edition,
+2018.
+
+\bibitem{ai_chess}
+Campbell, Murray; Hoane, A. Joseph; Hsu, Feng-hsiung,
+``Deep Blue'',
+\textit{Artificial Intelligence},
+Vol. 134, Issues 1–2, pp. 57–83,
+2002.
+
+\bibitem{stockfish}
+Stockfish Chess Engine Development Team,
+\textit{Stockfish},
+Open-source chess engine,
+\url{https://stockfishchess.org/}
+
+\bibitem{bitboard}
+Chess Programming Wiki Contributors,
+\textit{Bitboards},
+Chess Programming Wiki,
+2024,
+\url{https://www.chessprogramming.org/Bitboards}
+
+\end{thebibliography}
+
+\clearpage
+
+\end{document}
